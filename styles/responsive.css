@@ -1,0 +1,400 @@
+
+/*****************************************************************************/
+/*                            for 1170px or less                              */
+/*****************************************************************************/
+@media screen and (max-width:1170px) {
+
+
+
+}
+/*****************************************************************************/
+/*                            for 980px or less                              */
+/*****************************************************************************/
+@media screen and (max-width:980px) {
+
+
+		#colonne-unique .largeur_article {
+			width: 100%;
+		}
+		
+		#index {
+			width: 100%;
+		}
+		
+		header {
+			width: 98%;
+		}
+		
+		#admin_site{
+		display: none;
+		}
+		
+		#header_bar {
+			font-size: 12px;
+			width: 98%;
+		}
+		
+
+		
+		#principale {
+			width: 98%;
+		}
+		
+		
+		#colonne-unique {
+			padding: 0px;
+			width: 98%;
+		}
+		
+		#menu-accordeon {
+			margin: 0 0 0 387px;
+		}
+		
+
+		#logo img {
+		max-width: 89px;
+		}
+		
+		aside {
+		float : none;
+		width: 98%;
+		}
+		
+		aside .block{
+		float : left;
+		margin: 0;
+		}
+		
+		.aside_block {
+			width: 605px;
+		}
+
+		
+		aside .block:nth-child(odd){
+		margin-right: 7%;
+		margin-left: 0px;
+		}
+		
+
+		
+		.colonne2 {
+			float: none;
+			width: 605px;
+			margin: 0 auto;
+		}
+		
+		.clearleft{
+		clear : left;
+		}
+
+
+		
+		/**** Panier ***/
+		
+		#colonne-unique #panier {
+			width: 605px;
+		}
+		
+		.submit-panier {
+			margin-left: 59% !important;
+		}
+		
+		/**** Magasin ***/
+		
+		.inactif {
+		display : none;
+		}
+		
+		
+		#footer_box{
+			width: 98%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		
+		#main-menu a {
+			font-size: 13px;
+			width: 93px;
+		}
+
+
+}
+/*****************************************************************************/
+/*                            for 700px or less                              */
+/*****************************************************************************/
+@media screen and (max-width:658px) {
+
+		#main-menu {
+			margin-left: 181px;
+			margin-top: 1%;
+			text-align: right;
+			width: 0;
+		}
+
+		#nav_image {
+			height: 36px;
+			float: none;
+		}
+
+
+		#main-menu a {
+			display: block;
+			float: none;
+			font-size: 14px;
+			width: 189px;
+			 height: 37px;
+			line-height: 30px;
+			border-top: 1px solid #9a9192;
+			border-left: none;
+		}
+
+		#recherche {
+			margin-top: 5px;
+		}
+		
+		
+		#label {
+			width: -1px;
+		}
+		
+		#recherche input {
+			width: 154px;
+		}
+		
+		header {
+			height: 377px;
+		}
+				
+		
+		#header_droite {
+		width: 67%;
+		float: left;
+		}
+		
+		
+		#header_panier img,
+		#header_connexion img {
+			margin-top: 0px;
+			max-height: 28px;
+		}
+		
+
+		
+		#header_bar_global {
+			height: 28px;
+		}
+
+		#header_bar {
+			font-size: 11px;
+		}
+
+
+		#slider {
+			width: 100%;
+		}
+		
+		.slider_image {
+			width: 82%;
+			 margin-left: 2%;
+			margin-right: 2%;
+			text-align: center;
+		}
+		
+		.slider_zone_image{
+		margin-right : auto;
+		margin-left : auto;
+		margin-bottom : 15px;
+		width: 86%;
+		}
+		
+		.fleche_slider{
+			width : 5%;
+			text-align: center;
+		}
+		
+		#colonne-unique {
+			width: 93%;
+		}
+		
+		
+		.produit:nth-child(2n+1) {
+			margin-left: 0px;
+			margin-right: 1%;
+		}
+		
+		.produit:first-child {
+			margin-right: 1%;
+		}
+		
+		
+		#header_inscrire_newsletter{
+		display: none;
+		}
+		
+		#colonne-unique form {
+			width: 98%;
+		}
+		
+		
+		.aside_block {
+			width: 298px ;
+		}
+
+		.footer_sous_bloc {
+			width: 180px;
+		}
+		
+		.footer_bloc_bloc {
+			margin: 0 auto;
+			width: 62%;
+		}
+		
+		
+		.colonne2 {
+			width: 100%;
+		}
+		
+		.boutique {
+			width: 98%;
+		}
+		
+		.produit_boutique {
+			width: 98%;
+		}
+		
+		.produit_boutique {
+			max-width: 98%;
+		}
+		
+		.contenu_produit_boutique {
+			max-width: 43%;
+		}
+		
+		.image_boutique ,
+		.image_boutique a img {
+			max-width: 24%;
+		}
+		
+		.bouton-ajout img {
+			margin-left: 0px;
+		}
+		
+
+		
+		#main-menu a {
+			font-size: 14px;
+			width: 112px;
+		}
+}
+/*****************************************************************************/
+/*                            for 480px or less                              */
+/*****************************************************************************/
+@media screen and (max-width:480px) {
+
+
+		
+		#colonne-unique #panier {
+			width: 470px;
+		}
+		
+		#main-menu {
+			margin-left: 17px;
+		}
+		
+		
+		#header_bar {
+			font-size: 9px;
+		}
+		
+		#recherche input {
+			width: 112px;
+		}
+		
+		#recherche input[type="submit"] {
+			background: #d2d4d5 url("../image/loupe.png") no-repeat scroll left center;
+			color: #d2d4d5;
+			width: 35px;
+		}
+		
+		.aside_block {
+			width: 100%;
+		}
+				
+		.bouton-ajout a {
+			display: none;
+		}
+		
+		.englobe_produit {
+			margin: 0 auto;
+			width: 193px;
+		}
+		
+		.footer_bloc_bloc {
+			margin: 0 auto;
+			width: 85%;
+		}
+
+				.footer_bloc {
+			margin-left: 0;
+			margin-right: 0;
+		}
+		
+		.footer_bloc table {
+		font-size : 10px;
+		}
+		
+		.footer_image {
+			float: left;
+			margin-left: 0px;
+			width: 0px;
+		}
+		
+		.footer_image  img{
+			max-width: 50px;
+		}
+		
+
+		.footer_lien_contact {
+		height: 75px;
+		line-height: 20px;
+		margin-left: 66px;
+	}
+		
+		.twitter {
+			margin-top: 0;
+		}
+		
+		
+		.footer_contact_contact {
+			margin: 0 auto;
+			width: 280px;
+		}
+		
+		.footer_bloc {
+			float: none;
+			text-align: center;
+		}
+		
+		#footer_box {
+			padding-top: 10px;
+		}
+		
+		.footer_bloc #newsletter input {
+			margin-right: 0;
+			width: 147px;
+		}
+		
+		.footer_photo {
+			float: none;
+		}
+		
+		.footer_photo img {
+			max-width: 205px;
+			margin-bottom: 10px;
+		}
+		
+		.footer_bloc #newsletter label {
+		margin-top: 5px;
+		display: block;
+		}
+}

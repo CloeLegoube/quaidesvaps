@@ -1,0 +1,116 @@
+
+.aside_boite,
+.fb-page{
+height : 206px !important;
+border : 1px solid #423d3d;
+background-color: white;
+overflow: hidden;
+}
+
+.aside_boite span {
+color : #cb2d18;
+font-size : 33px;
+}
+
+aside{
+	padding: 0;
+	margin-left:19px;
+	margin-right:41px;
+	margin-top:10px;
+	margin-bottom:20px;
+	background: url(../images/menutransparent-pixel.png) 0 0 repeat;
+}
+
+aside a{
+color : #cb2d18;
+font-size : 17px;
+text-decoration : none;
+}
+
+aside  a:hover{
+font-weight : bold;
+}
+
+.aside_block {
+    margin: 0 auto;
+    width: 100%;
+}
+
+aside .block:nth-child(2n+1) {
+    margin-right: 4%;
+}
+
+.aside_boite img{
+margin-right : 5px;
+margin-left : 15px;
+margin-top : 8px;
+
+}
+
+.aside_boite .promotion_image{
+width: 100%;
+height: 146px;
+text-align: center;
+}
+
+.promotion_image img{
+max-width: 280px;
+max-height: 146px;
+margin-top : 0px;
+}
+
+.aside_block .block .first h6 {
+text-align: center;
+}
+
+.demander_carte .aside_lien{
+	display: inline-block;
+    vertical-align: middle;
+    width: 112px;
+	float:left;
+	margin-left: 10px;
+	margin-top: 15px;
+}
+.demander_carte img{
+	float:left;
+	margin-top: 15px;
+}
+
+.demander_carte{
+	height: 74px;
+	
+}
+
+
+.aside_boite p{
+margin : 0;
+padding : 0;
+margin-left : 8px;
+margin-top : 8px;
+margin-bottom : 8px;
+display: inline;
+}
+
+
+
+
+.aside_boite h6{
+line-height : 20px;
+font-size : 14px;
+margin: 0;
+padding: 5px;
+ color: #797171;
+}
+
+.aside_boite a{
+text-decoration : none;
+vertical-align : middle;
+}
+
+#u_0_0 {
+height: 110px;
+}
+
+._h7r {
+    width: 93% !important;
+}
