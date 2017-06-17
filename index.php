@@ -1,5 +1,5 @@
 <?php
-	include("inc/init_inc.php");
+	include("inc/install.php");
 	
 	$comptage = execute_requete("SELECT DISTINCT * 
 					FROM produit p

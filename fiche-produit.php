@@ -1,5 +1,5 @@
 <?php
-	include("inc/init_inc.php");
+	include("inc/install.php");
 	
 	$nav_en_cours = 'page_fiche_produit'; 
 //**********************************************************************************************************	

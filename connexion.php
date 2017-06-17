@@ -1,5 +1,5 @@
 <?php
-	include("inc/init_inc.php");
+	include("inc/install.php");
 	
 		//******************************************************************************	
 			//Si l'utilisateur est connecté il n'a pas à voir le formulaire de connexion donc on le redirige vers profil.				

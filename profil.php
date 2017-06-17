@@ -1,5 +1,5 @@
 <?php
-	include("inc/init_inc.php");
+	include("inc/install.php");
 	
 	if(!utilisateur_est_connecte())
 	{

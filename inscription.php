@@ -1,5 +1,5 @@
 <?php
-	include("inc/init_inc.php");
+	include("inc/install.php");
 	$result_age = "";
 
 	if(isset($_POST['inscription'])) // ISSET = existe . Si le formulaire a été soumis.
