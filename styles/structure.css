@@ -1,0 +1,76 @@
+
+
+/* RESPONSIVE WEB */
+
+/*@media screen and (max-width : 550px) {
+
+aside			{ width: 256px;}
+.colonne2		{ clear : left;}
+#slider 			{ clear : left;	}
+.block 	{ float : left; width : 256 px;}
+#header_droite	{ float : left; width : 230px;}
+#main-menu a		{ }
+.produit		{ margin-bottom : 32px; }
+
+}*/
+
+/*********************GENERALE**********************/
+
+
+
+body{
+	margin:0;
+	margin-top:0px;
+	padding: 0;
+	background: #ffffff url(../image/body.jpg) center top no-repeat;
+	font-family: 'Open Sans', sans-serif;
+	}
+
+
+/*********************STRUCTURE**********************/
+
+#page{
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+}
+
+
+header{
+	margin:0;
+	padding:0;
+	height: 305px;
+	width: 965px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#principale{
+	margin: 0;
+	padding: 0;
+	min-height: 320px;
+	width: 965px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color : rgba(255,255,255,0.7);
+
+
+}
+
+aside{
+	/*background-color: #efeeee; blanc du menu*/
+	width: 280px;
+	float : left;
+
+}
+
+.colonne2{
+	width: 605px;
+	margin: 10px auto 30px auto;
+}
+
+
+footer{
+	clear: left;
+	width:100%;
+}
