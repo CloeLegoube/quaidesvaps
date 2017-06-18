@@ -26,9 +26,6 @@
    ));
 
 ?>
-
-
-
 <!-- **************** MENU ADMIN ************************* -->
 
 <?php
@@ -39,8 +36,6 @@
 <!-- **************************************************************************************** -->
 <!--  									DEUXIEME COLONNE									  -->
 <!-- **************************************************************************************** -->
-
-
 				<div id="colonne-unique" class="colonne2"> <!-- début colonne 2-->
 
 					<div class="titre_h2 largeur_article"><h2>INTERFACE ADMINISTRATEUR</h2></div>
@@ -48,7 +43,7 @@
 					<aside class="statistiques">
 						<div class="aside_block">
 
-<!-- ******* BOITE 2 : NEWS ******* -->
+<!-- ******* BOITE 2 : gauche ******* -->
 					<div class="block">
 						<div class="titre_h2 largeur"><h2>MEILLEURES VENTES</h2></div>
 						<a class="lien_stat" href="?action=vente#resultat"><div class="stat stat2 <?php if(isset($_GET['action']) && $_GET['action']== "vente") echo 'result2'?>">
@@ -59,7 +54,7 @@
 					</div>
 
 
-<!-- ******* BOITE FACEBOOK ******* -->
+<!-- ******* BOITE Fdroite ******* -->
 					<div class="block">
 						<div class="titre_h2 largeur"><h2>RENTABILITE</h2></div>
 						<a class="lien_stat" href="?action=prix#resultat"><div class="stat stat4 <?php if(isset($_GET['action']) && $_GET['action']== "prix") echo 'result4'?>">
@@ -78,100 +73,7 @@
 
 
 <?php
-//**********************************************************************************************************
-//                         		  Top 5 des produits les mieux notés
-//**********************************************************************************************************
 
-
-	if(isset($_GET['action']) && $_GET['action']== "note")
-	{
-
-		$notation = execute_requete("SELECT *, AVG(note) AS note
-			FROM produit p, avis a
-			WHERE p.id_produit = a.id_produit
-			GROUP BY p.id_produit
-			ORDER BY AVG(note) DESC LIMIT 0,8" );
-
-			$j=1;
-			echo '<div id="resultat" class="titre_h2 largeur_article clear"><h2>Top 5 des produits les mieux notés</h2></div>';
-
-			while($produit = $notation->fetch_assoc()){
-				//debug($produit);
-
-										// ETOILES //
-										$resultat = execute_requete("SELECT avg(note) AS moyenne
-										FROM avis a
-										WHERE a.id_produit= ".$produit['id_produit']."
-										GROUP BY a.id_avis");
-
-										$note = $resultat->fetch_assoc();
-										//debug($note);
-?>
-
-
-
-				<div class="produit">
-
-						<h3 class="result1">N° <?php echo $j++ ?> du classement</h3>
-						<h4 class="h4_stat">Note moyenne : <?php echo round($note['moyenne'],1) ?>  </h4>
-						<div class="contenu_produit">
-
-<?php
-						if(!empty($produit['prix_promo'])) {
-							echo '<div class="discount">PROMO</div>';
-						}
-?>
-
-							<div class="contenu_produit_image">
-								<a  class="image_contenu_produit"
-								href="<?php echo RACINE_SITE ?>fiche-produit.php?id=<?php echo $produit['id_produit'] ?>">
-								<img style="max-width: 193px; max-height: 146px;" src="<?php echo RACINE_SITE ?><?php echo $produit['photo'] ?>" alt="<?php echo $produit['titre'] ?>" />
-								</a>
-							</div>
-
-							<h3><?php echo substr($produit['titre'],0, 20) ?></h3>
-
-<?php
-							if(!empty($produit['prix_promo'])) {
-								echo '<p class="prix clignotant">'.$produit['prix_promo'].'€  ';
-								echo '<span class="prix prix_barre">'.$produit['prix'].'€</span></p>';
-							}else {
-
-								echo '<p class="prix">'.$produit['prix'].'€</p>';
-							}
-?>
-
-
-
-							<div class="etoiles">
-
-
-
-										<?php
-										for ($i = 1; $i <= $note['moyenne'] ; $i++)
-										 {
-											echo '<img src="'.RACINE_SITE.'/image/etoile_noire.png" alt="etoile" />';
-										 };
-
-										for ($i = 1; $i <= (5-$note['moyenne']) ; $i++)
-										 {
-											echo '<img src="'.RACINE_SITE.'/image/etoile_grise.png" alt="etoile" />';
-										 };
-
-										?>
-
-							</div>
-						</div>
-				</div>
-<?php		}
-?>
-
-
-
-
-
-<?php
-	}
 
 //**********************************************************************************************************
 //                         		 Top 5 des produits les mieux vendus
@@ -229,34 +131,6 @@
 							}
 ?>
 
-
-
-							<div class="etoiles">
-
-										<?php
-										$resultat = execute_requete("SELECT avg(note) AS moyenne
-										FROM avis a
-										WHERE a.id_produit= ".$produit['id_produit']."
-										GROUP BY a.id_avis");
-
-										$note = $resultat->fetch_assoc();
-										//debug($note);
-										?>
-
-										<?php
-										for ($i = 1; $i <= $note['moyenne'] ; $i++)
-										 {
-											echo '<img src="'.RACINE_SITE.'/image/etoile_noire.png" alt="etoile" />';
-										 };
-
-										for ($i = 1; $i <= (5-$note['moyenne']) ; $i++)
-										 {
-											echo '<img src="'.RACINE_SITE.'/image/etoile_grise.png" alt="etoile" />';
-										 };
-
-										?>
-
-							</div>
 						</div>
 				</div>
 <?php		}
@@ -266,8 +140,6 @@
 
 <?php
 	};
-
-
 
 //**********************************************************************************************************
 //                         Top 5 des membres qui achetent le plus cher(en terme de prix)
@@ -314,21 +186,9 @@ if(isset($_GET['action']) && $_GET['action']== "prix")
 			}
 ?>
 
-
-
-
-
 <?php
 	}
 ?>
-
-
-
-
-
-
 				</div> <!-- fin COLONNE 2 ......................... -->
-
-
 
 			</div><!-- Fin de principale............................ -->
