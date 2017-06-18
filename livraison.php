@@ -1,16 +1,8 @@
 <?php
 	include("inc/install.php");
 
-
-//**************************************************************************************************************
-//                          ETAPE 1 :::  TRANSFERT ENTRE LA FICHE_produit et LE PANIER
-//***************************************************************************************************************
-
 	$j = count($_SESSION['promotion']['code_promo']) - 1;
 	creation_du_panier ();
-
-	// -------------------------------------- ACTION de VIDER LE PANIER ------------------------------------
-	///[cf.1]
 	if(isset($_GET['action']) && $_GET['action'] == "vider")
 	{
 		unset($_SESSION['panier']); // unset permet de préciser et de vider un élément : ici la session du panier et non pas la session de l'utilisateur. session_destroy () n'aurait pas convenu.
@@ -100,27 +92,16 @@
 		if(!utilisateur_est_connecte())
 		{
 				header("location:inscription.php");
-
-
-		}else{
-
-
-
-
-
-
+		}
+		else
+		{
 				if(isset($_POST['conditions_generales'])){
-
 					for($i= 0; $i < count ($_SESSION['panier']['id_produit']); $i++) // J'execute autant de fois que j'ai de produit
 					{
-
 						//On vérifie la quantité en stock avec une requête de selection pour chaque produit avec l'id_produit de la session
 						// $i correspond à l'indice du tableau array $_SESSION['panier']['id_produit'] pour aller chercher chaque ligne du produit
-
 						$resultat = execute_requete("SELECT * FROM produit WHERE id_produit = '".$_SESSION['panier']['id_produit'][$i]."'");
 						$produit = $resultat->fetch_assoc();
-
-
 						if($produit['stock'] < $_SESSION['panier']['quantite'][$i])
 						// Est-ce que stock réel (en base) est inférieur à la quantité demandée dans le panier ?
 						{
