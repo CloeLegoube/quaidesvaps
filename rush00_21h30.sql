@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Dim 18 Juin 2017 à 17:22
+-- Généré le :  Dim 18 Juin 2017 à 19:31
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.0
 
@@ -82,10 +82,11 @@ INSERT INTO `commande` (`id_commande`, `montant`, `id_membre`, `date_commande`, 
 (31, 55, 2, '2017-06-17 18:57:28', '2017-06-17 18:57:33', '30 rue Saint S&eacute;bastien', 75010, 'Paris  ', 'En cours de traitement'),
 (32, 120, 2, '2017-06-17 19:25:22', '2017-06-17 19:25:27', '30 rue Saint S&eacute;bastien', 75010, 'Paris  ', 'En cours de traitement'),
 (33, 60, 2, '2017-06-17 21:13:15', '2017-06-17 21:13:20', '30 rue Saint S&eacute;bastien', 75010, 'Paris  ', 'En cours de traitement'),
-(34, 452, 10002, '2017-06-17 21:22:07', '2017-06-17 21:22:12', 'wefevvdghfh', 81310, 'wegfvav', 'En cours de traitement'),
+(34, 452, 2, '2017-06-17 21:22:07', '2017-06-17 21:22:12', 'wefevvdghfh', 81310, 'wegfvav', 'En cours de traitement'),
 (35, 0, 1, '2017-06-18 17:42:37', '2017-06-18 17:42:42', 'rue Saint S&eacute;bastien', 75013, 'Paris ', 'En cours de traitement'),
 (36, 28, 1, '2017-06-18 17:43:26', '2017-06-18 17:43:31', 'rue Saint S&eacute;bastien', 75013, 'Paris ', 'En cours de traitement'),
-(37, 60, 10004, '2017-06-18 19:11:37', '2017-06-18 19:11:42', 'qwer', 75017, 'qwer', 'En cours de traitement');
+(37, 60, 4, '2017-06-18 19:11:37', '2017-06-18 19:11:42', 'qwer', 75017, 'qwer', 'En cours de traitement'),
+(38, 55, 4, '2017-06-18 19:25:14', '2017-06-18 19:25:19', 'qwer', 75017, 'qwer', 'En cours de traitement');
 
 -- --------------------------------------------------------
 
@@ -177,7 +178,8 @@ INSERT INTO `details_commande` (`id_details_commande`, `id_commande`, `id_produi
 (50, 34, 62, 1, 0, '0', '0'),
 (51, 34, 114, 7, 0, '0', '0'),
 (52, 36, 99, 7, 0, '0', '0'),
-(53, 37, 115, 1, 0, '0', '0');
+(53, 37, 115, 1, 0, '0', '0'),
+(54, 38, 116, 1, 0, '0', '0');
 
 -- --------------------------------------------------------
 
@@ -197,7 +199,7 @@ CREATE TABLE `membre` (
 --
 
 INSERT INTO `membre` (`id_membre`, `pseudo`, `mdp`, `statut`) VALUES
-(10004, 'admin', '6a4e012bd9583858a5a6fa15f58bd86a25af266d3a4344f1ec2018b778f29ba83be86eb45e6dc204e11276f4a99eff4e2144fbe15e756c2c88e999649aae7d94', 0);
+(0, 'admin', '6a4e012bd9583858a5a6fa15f58bd86a25af266d3a4344f1ec2018b778f29ba83be86eb45e6dc204e11276f4a99eff4e2144fbe15e756c2c88e999649aae7d94', 1);
 
 -- --------------------------------------------------------
 
@@ -256,7 +258,7 @@ INSERT INTO `produit` (`id_produit`, `titre`, `photo`, `prix`, `prix_promo`, `ca
 (113, 'E-liquide - Goût Vanille', 'images/-3108-Vanille.jpg', 5, 0, 'E-liquides', 11, 3108, 'Ce produit a été fabriqué par notre partenaire Dekang. \r\n\r\nQui est Dekang ? \r\n\r\nDekang est tout simplement le leader mondial de la fabrication de l\'e-liquide. Étant un des plus anciens acteurs du marché, il dispose d\'un savoir-faire unique et d\'un panel de saveur extraordinairement vaste. Dekang est réputé pour son sérieux et la qualité de ces e-liquides. Disposant d\'infrastructures certainement unique au monde sur ce secteur, Dekang garantit une qualité constante de fabrication et une application drastique des normes les plus exigeantes en terme de qualité et de sûreté. Dekang dispose notamment de la norme GMP, normes américaines allemandes (normes produits alimentaires pharmaceutiques). \r\n\r\nLes avantages Dekang ? \r\n\r\nSi nous avons choisi Dekang c\'est avant tout pour la qualité et la sûreté des e-liquides. De très (trop) nombreux produits vendus sur le marché actuellement proviennent d\'assembleurs dont les conditions de préparation sont totalement opaque. On ne peut pas plaisanter avec un produit inhalés par nos clients. Combien de liquide dis "Français" sont assemblés en "salle propre" respectant la norme GMP ?...', 0, '', 0, 0, 0, 'Tous nos e-liquides existent en 6 ml, 11ml,18 ml et 30ml', '', '', '', '', '', '', '', '', NULL),
 (114, 'Coffret Divine Blanc', 'images/114-1520-Coffret-Divine-Blanc.jpg', 60, 42, 'E-cigarettes,Accessoires', 25, 1520, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', NULL),
 (115, 'Coffret Divine Violet', 'images/115-1521-Coffret-Divine-Violet.jpg', 60, 42, 'E-cigarettes,Accessoires', 23, 1521, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', NULL),
-(116, 'Coffret EGO bleue', 'images/116-1522-EGO-bleue-Coffret.jpg', 55, 0, 'E-cigarettes,Accessoires', 23, 1522, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', 5),
+(116, 'Coffret EGO bleue', 'images/116-1522-EGO-bleue-Coffret.jpg', 55, 0, 'E-cigarettes,Accessoires', 22, 1522, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', 5),
 (117, 'EGO premium Silver', 'images/117-1523-EGO-Premium-Silver.jpg', 36, 0, 'E-cigarettes', 45, 1523, 'Le Kit e-smart Kanger est destiné aux petits et moyens vapoteurs E-cigarette raffinée, très simple à utiliser et entretenir', 22, 'Acier inoxydable', 59, 79, 5, 'Connecteur 510 réglable', 'Contrôle du tirage (airflow) avec bagues de couleur optionnelles', 'Plateau de construction modèle S ', 'Chambre d\'atomisation: Aluminium anodisé Ematal - isolante (voir ci-dessous)', 'Tank: Verre borosilicate dépoli, interchangeable', 'Drip tip custom ', 'Joints de rechange, vis de rechange, clef Allen inclus', '', '', 5);
 
 -- --------------------------------------------------------
@@ -340,7 +342,7 @@ ALTER TABLE `promotion`
 -- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
-  MODIFY `id_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT pour la table `details_categorie`
 --
@@ -350,7 +352,7 @@ ALTER TABLE `details_categorie`
 -- AUTO_INCREMENT pour la table `details_commande`
 --
 ALTER TABLE `details_commande`
-  MODIFY `id_details_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id_details_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 --
 -- AUTO_INCREMENT pour la table `membre`
 --
