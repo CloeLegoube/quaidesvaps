@@ -140,31 +140,27 @@
 			$complement = mysqli_real_escape_string ($mysqli, $_POST['complement']);
 
 			$envoi_descriptif = $_POST['descriptif'];
+
+
 			$count = $_POST['categorie'];
 			$categorie = "";
+			/* On supprime toutes les categories de ID produit pour les remplacer */
+			execute_requete("DELETE FROM details_categorie WHERE id_produit = '".$_POST['id_produit']."'");
+
 			foreach($count as $cat)
 			{
+				/* Affichage des categories dans la colonne du produit */
 				$categorie .= $cat.', ';
 
+				/* On recupere l'ID de la categorie */
 				$req_categorie = execute_requete("SELECT id_categorie FROM categorie WHERE nom_categorie = '".$cat."'");
 				$id_categorie = mysqli_fetch_assoc($req_categorie);
-				// $id_categorie = mysqli_fetch_assoc($req_categorie);
-				// print_r($id_categorie);
-				$req_details_cat = execute_requete("SELECT id_categorie, id_produit FROM details_categorie WHERE id_produit = '".$_POST['id_produit']."'");
-				$details_cat = mysqli_fetch_assoc($req_details_cat);
-				// print_r($details_cat);
-				if ($details_cat['id_categorie'] == $id_categorie['id_categorie'])
-				{
-					execute_requete("REPLACE INTO details_categorie (id_categorie, id_produit)
-					VALUES ($id_categorie[id_categorie], $_POST[id_produit])");
-					echo "OK";
-				}
+
+				/* Ajout des categories dans details_categorie pour reinitialiser les champs */
+				execute_requete("INSERT INTO details_categorie (id_categorie, id_produit) VALUES ($id_categorie[id_categorie], $_POST[id_produit])");
 			}
-			// print_r($_POST['categorie']);
 			execute_requete("REPLACE INTO produit VALUES
 			('$_POST[id_produit]' , '$titre' , '$nom_photo' , '$_POST[prix]' , '$_POST[prix_promo]' ,'".$categorie."' , '$_POST[stock]' , '$_POST[ref]' , '".$descriptif."' ,  '$_POST[diametre]' , '$matiere' , '$_POST[hauteur]' , '$_POST[poids]' , '$_POST[contenance]' , '$caracteristique5' , '$caracteristique6' , '$caracteristique7' , '$caracteristique8' , '$caracteristique9' , '$caracteristique10' , '$caracteristique11' , '$caracteristique12' , '$complement' , '5')");
-
-
 		}
 	}
 
