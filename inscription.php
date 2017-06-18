@@ -37,7 +37,7 @@ if(isset($_POST['inscription']))
 	if (empty($msg))
 	{
 		$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
-		if($membre->num_rows >0)
+		if(mysqli_num_rows($membre)>0)
 
 		{
 			$msg .=  '<div id="msg">
@@ -94,7 +94,8 @@ echo $msg;
 if($_SERVER['HTTP_REFERER'] == RACINE_SITE."panier.php")
 {
 	$membre = execute_requete("SELECT * FROM membre WHERE id_membre = '".$_SESSION['utilisateur']['id_membre']."'");
-	$membre_connecte = $membre->fetch_assoc();
+	$membre_connecte = mysqli_fetch_assoc($membre)
+;
 ?>
 			<label for="ville">Adresse de livraison (*modifier si différente)</label><br />
 			<input type="text" id="cp2" name="cp2" placeholder=" Votre code postal" value="<?php echo $membre_connecte['cp']?>"/><br />

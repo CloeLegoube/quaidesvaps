@@ -1,24 +1,24 @@
 <?php
 $link = mysqli_connect("localhost", "root", "root");
-$sql = 'CREATE DATABASE rush001';
+$sql = 'CREATE DATABASE rush004';
 
 if (mysqli_query($link, $sql))
 {
-$mysqli =  @new Mysqli("localhost", "root", "root", "rush001");
+$mysqli =  @new Mysqli("localhost", "root", "root", "rush004");
 // On se connecte et on crée un objet mysqli
 // Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
- $mysqli->query("SET NAMES UTF8");
+mysqli_query($mysqli , "SET NAMES UTF8");
  /* Modification du jeu de résultats en utf8 */
- if (!$mysqli->set_charset("utf8")) {
-    printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", $mysqli->error);
+ if (!mysqli_set_charset($mysqli , "utf8")) {
+    printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", mysqli_error($mysqli));
 }
 
-if($mysqli->connect_error)
+if(mysqli_connect_error())
 {
 		die('Un problème est survenu lors de la tentative de connexion à la BDD');
 }
-$link = mysqli_connect("localhost", "root", "root", "rush001");
-$query = file_get_contents("http://localhost:8080/Rush00/rush00_18h30.sql");
+$link = mysqli_connect("localhost", "root", "root", "rush004");
+$query = file_get_contents("http://localhost:8080/ok/rush00_19h30.sql");
     $array = explode(";\n", $query);
     for ($i=0; $i < count($array) ; $i++) {
         $str = $array[$i];
@@ -29,16 +29,16 @@ $query = file_get_contents("http://localhost:8080/Rush00/rush00_18h30.sql");
     }
 }
 else {
-	$mysqli =  @new Mysqli("localhost", "root", "root", "rush001");
+	$mysqli =  @new Mysqli("localhost", "root", "root", "rush004");
 	// On se connecte et on crée un objet mysqli
 	// Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
-	 $mysqli->query("SET NAMES UTF8");
+	mysqli_query($mysqli , "SET NAMES UTF8");
 	 /* Modification du jeu de résultats en utf8 */
-	 if (!$mysqli->set_charset("utf8")) {
-	    printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", $mysqli->error);
+	 if (!mysqli_set_charset($mysqli , "utf8")) {
+	    printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", mysqli_error($mysqli));
 	}
 
-	if($mysqli->connect_error)
+	if(mysqli_connect_error())
 	{
 			die('Un problème est survenu lors de la tentative de connexion à la BDD');
 	}

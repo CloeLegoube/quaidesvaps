@@ -16,7 +16,7 @@ if(isset($_POST['modification']))
 {
 	$href = "profil.php";
 	$resultat = execute_requete("SELECT * FROM membre WHERE id_membre = '".$_SESSION['utilisateur']['id_membre']."'");
-	if($resultat->num_rows == 0 && isset($_GET['action']) && $_GET['action']== "update")
+	if(mysqli_num_rows($resultat)== 0 && isset($_GET['action']) && $_GET['action']== "update")
 	{
 
 		$msg .= '<div id="msg">
@@ -65,7 +65,7 @@ if(isset($_POST['modification']))
 			if ($_POST['pseudo'] !== $_SESSION['utilisateur']['pseudo'])
 			{
 				$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
-				if($membre->num_rows > 0)
+				if(mysqli_num_rows($membre)> 0)
 				{
 					$msg .=  '<div id="msg">
 						<p class="orange">Pseudo déjà utilisé. Veuillez vous connecter à votre compte ou saisir un nouveau pseudo s\'il ne correspond pas au vôtre</p>
