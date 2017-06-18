@@ -5,7 +5,8 @@ $sql = 'CREATE DATABASE rush00_4';
 
 if (mysqli_query($link, $sql))
 {
-$mysqli =  @new Mysqli("localhost", "root", "root", "rush00_4");
+$mysqli =  @new Mysqli("localhost", "root", "root", "adrien");
+
 // On se connecte et on crée un objet mysqli
 // Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
 mysqli_query($mysqli , "SET NAMES UTF8");
@@ -20,7 +21,11 @@ if(mysqli_connect_error())
 }
 
 $link = mysqli_connect("localhost", "root", "root", "rush00_4");
-$query = file_get_contents("http://localhost:8080/Rush_branch/rush00_21h30.sql");
+$test = dirname(__FILE__);
+preg_match_all("/MyWebSite\/(.*?)\/inc/", $test, $tab);
+$file = $tab[1][0];
+$file = "http://localhost:8080/".$file."/";
+$query = file_get_contents($file."rush00_21h30.sql");
 
     $array = explode(";\n", $query);
     for ($i=0; $i < count($array) ; $i++) {
