@@ -93,7 +93,7 @@
 			echo '<div id="resultat"  class="titre_h2 largeur_article clear"><h2>Top 5 des produits les mieux vendus</h2></div>';
 			echo "<div class='block_produit'>";
 
-			while($produit = $vente->fetch_assoc()){
+			while($produit = mysqli_fetch_assoc($vente)){
 				//debug($produit);
 			$compte = $produit['produit'];
 ?>
@@ -158,7 +158,7 @@ if(isset($_GET['action']) && $_GET['action']== "prix")
 
 			echo '<div id="resultat"  class="titre_h2 largeur_article clear"><h2>Top 5 des membres qui achètent le cher</h2></div>';
 
-			while($produit = $prix->fetch_assoc()){
+			while($produit = mysqli_fetch_assoc($prix)){
 
 				$compte = round($produit['id_membre'],2);
 ?>

@@ -14,7 +14,7 @@
 	}
 			$comptage = execute_requete('SELECT id_produit FROM produit');
 			//debug($comptage);
-			$nb_produit = $comptage->num_rows;
+			$nb_produit = mysqli_num_rows($comptage);
 			$nb_produit_page = 6;
 			$nb_pages = ceil($nb_produit / $nb_produit_page);
 
@@ -46,7 +46,7 @@
 
 				//*****************************************************************************************
 
-				if($id_produit->num_rows != 0 /* PRECISIONS : */ && isset($_GET['action'])&& $_GET['action'] == "ajout")
+				if(mysqli_num_rows($id_produit)!= 0 /* PRECISIONS : */ && isset($_GET['action'])&& $_GET['action'] == "ajout")
 		{
 			$msg .= "<div class='erreur'>Réference déjà attribuée à un produit. Merci de vérifier votre saisie.</div>";
 		}
@@ -126,18 +126,18 @@
 			// ICI on transforme INSERT INTO en REPLACE INTO et on ajoute $_POST[id_produit] pour récupérer la valeur
 			// Rappel : REPLACE permet de faire UPDATE et INSERT en même temps (pour le cas de la modification).
 
-			$titre = $mysqli->real_escape_string($_POST['titre']);
-			$matiere = $mysqli->real_escape_string($_POST['matiere']);
-			$descriptif = $mysqli->real_escape_string($_POST['descriptif']);
-			$caracteristique5 = $mysqli->real_escape_string($_POST['caracteristique5']);
-			$caracteristique6 = $mysqli->real_escape_string($_POST['caracteristique6']);
-			$caracteristique7 = $mysqli->real_escape_string($_POST['caracteristique7']);
-			$caracteristique8 = $mysqli->real_escape_string($_POST['caracteristique8']);
-			$caracteristique9 = $mysqli->real_escape_string($_POST['caracteristique9']);
-			$caracteristique10 = $mysqli->real_escape_string($_POST['caracteristique10']);
-			$caracteristique11 = $mysqli->real_escape_string($_POST['caracteristique11']);
-			$caracteristique12 = $mysqli->real_escape_string($_POST['caracteristique12']);
-			$complement = $mysqli->real_escape_string($_POST['complement']);
+			$titre = mysqli_real_escape_string ($mysqli, $_POST['titre']);
+			$matiere = mysqli_real_escape_string ($mysqli, $_POST['matiere']);
+			$descriptif = mysqli_real_escape_string ($mysqli, $_POST['descriptif']);
+			$caracteristique5 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique5']);
+			$caracteristique6 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique6']);
+			$caracteristique7 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique7']);
+			$caracteristique8 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique8']);
+			$caracteristique9 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique9']);
+			$caracteristique10 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique10']);
+			$caracteristique11 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique11']);
+			$caracteristique12 = mysqli_real_escape_string ($mysqli, $_POST['caracteristique12']);
+			$complement = mysqli_real_escape_string ($mysqli, $_POST['complement']);
 
 			$envoi_descriptif = $_POST['descriptif'];
 			$count = $_POST['categorie'];
@@ -147,10 +147,18 @@
 				$categorie .= $cat.', ';
 
 				$req_categorie = execute_requete("SELECT id_categorie FROM categorie WHERE nom_categorie = '".$cat."'");
-				$id_categorie = $req_categorie->fetch_assoc();
-				print_r($id_categorie);
-				execute_requete("REPLACE INTO details_categorie (id_categorie, id_produit)
-				VALUES ($id_categorie[id_categorie], $_POST[id_produit])");
+				$id_categorie = mysqli_fetch_assoc($req_categorie);
+				// $id_categorie = mysqli_fetch_assoc($req_categorie);
+				// print_r($id_categorie);
+				$req_details_cat = execute_requete("SELECT id_categorie, id_produit FROM details_categorie WHERE id_produit = '".$_POST['id_produit']."'");
+				$details_cat = mysqli_fetch_assoc($req_details_cat);
+				// print_r($details_cat);
+				if ($details_cat['id_categorie'] == $id_categorie['id_categorie'])
+				{
+					execute_requete("REPLACE INTO details_categorie (id_categorie, id_produit)
+					VALUES ($id_categorie[id_categorie], $_POST[id_produit])");
+					echo "OK";
+				}
 			}
 			// print_r($_POST['categorie']);
 			execute_requete("REPLACE INTO produit VALUES
@@ -171,7 +179,7 @@
 			// ------------- Suppression de l'image --------------------------------------------------
 
 			$resultat = execute_requete("SELECT * FROM produit WHERE id_produit = '$_GET[id]'");
-			$produit_a_supprimer = $resultat -> fetch_assoc ();
+			$produit_a_supprimer = mysqli_fetch_assoc($resultat);
 			//echo "<pre>";print_r($produit_a_supprimer);echo "</pre>";
 
 						// Ici on voit que le seul indice de ce tableau est "photo" qui renvoie au lien de l'image
@@ -341,14 +349,14 @@
 						<tfoot>
 						<tr>
 						<th scope="row">Total</th>
-						<td colspan="10"><?php echo $resultat->num_rows ?> produits</td>
+						<td colspan="10"><?php echo mysqli_num_rows($resultat)?> produits</td>
 						</tr>
 						</tfoot>
 
 						<tbody>
 
 <?php
-		while($ligne = $resultat->fetch_assoc())
+		while($ligne = mysqli_fetch_assoc($resultat))
 			{
 ?>
 						<tr>
@@ -412,7 +420,7 @@
 
 		{
 			$resultat = execute_requete("SELECT * FROM produit WHERE id_produit = '$_GET[id]'");
-			$_POST = $resultat -> fetch_assoc ();
+			$_POST = mysqli_fetch_assoc($resultat);
 
 			// Ici on aura pu donner un autre nom à cette variable ex : $modif et dire que $_POST = $modif mais on a raccourci l'opération en écrivant directement $_POST. Il faut se souvenir que la superglobal $_POST fonctionne pour l'ajout d'un salle mais pas pour la modification car on ne soumet pas de formulaire, donc va lui dire quoi aller chercher pour remplir $_POST.
 		}
@@ -476,7 +484,7 @@
 									 <?php
 									 $compte = execute_requete("SELECT nom_categorie
 									 	FROM categorie");
-										while ($cat = $compte->fetch_assoc())
+										while ($cat = mysqli_fetch_assoc($compte))
 										{
 										?>
 										 <input type="checkbox" name="categorie[]" value="<?php echo $cat['nom_categorie']; ?>" <?php if(isset($_POST['categorie'])&& $_POST['categorie']== $cat['nom_categorie']) echo "checked";?> /><?php echo $cat['nom_categorie']; ?><br/>

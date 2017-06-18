@@ -78,7 +78,7 @@
 					)" );
 
 
-					$nb_produit = $recherche->num_rows;
+					$nb_produit = mysqli_num_rows($recherche);
 ?>
 
 
@@ -94,7 +94,7 @@
 <?php
 
 
-			while($produit = $recherche->fetch_assoc()){
+			while($produit = mysqli_fetch_assoc($recherche)){
 						//debug($produit);
 
 ?>

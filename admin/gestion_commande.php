@@ -92,14 +92,14 @@
 					<?php
 					//************** Affichage du chiffre d'affaires global*******************************************
 					$resultat = execute_requete("SELECT SUM(montant) AS CA FROM commande");
-					$CA = $resultat->fetch_assoc();
+					$CA = mysqli_fetch_assoc($resultat);
 
 					echo "<div class='CA'>Le Chiffre d'affaires (CA) de notre société est de : ".round($CA['CA'],2)." €</div>";
 					//************************************************************************************************
 
 
 					$resultat = execute_requete("SELECT * FROM commande GROUP BY  id_commande ".$col." ".$tri." "); // EXECUTION DE LA REQUETE DE SELECTION
-					$CA_compte = $resultat->num_rows;
+					$CA_compte = mysqli_num_rows($resultat);
 					?>
 
 
@@ -153,7 +153,7 @@
 
 					<?php
 
-					while($ligne = $resultat->fetch_assoc())
+					while($ligne = mysqli_fetch_assoc($resultat))
 					{
 
 					?>
@@ -209,7 +209,7 @@
 
 					//debug($resultat);
 
-					if($resultat->num_rows == 0){
+					if(mysqli_num_rows($resultat)== 0){
 							 echo'<div class="clear"></div><div id="msg"><p class="orange">Pas de détail pour la commande n° '.$_GET['id'].'</p></div>';
 							$_GET['action'] = "affichage";
 							$_GET['id'] = "0";
@@ -226,7 +226,7 @@
 								AND p.id_produit = d.id_produit
 								GROUP BY id_details_commande");
 
-								$cde = $commande->fetch_assoc();
+								$cde = mysqli_fetch_assoc($commande);
 								echo "<caption>DETAIL DE LA COMMANDE N°".$_GET['id'].", effectuée par ".$cde['pseudo']." (membre n°".$cde['id_membre'].")</caption>";
 
 ?>
@@ -266,7 +266,7 @@
 					AND m.id_membre = c.id_membre
 					AND p.id_produit = d.id_produit ");
 
-					$somme = $total->fetch_assoc();
+					$somme = mysqli_fetch_assoc($total);
 
 
 					//************************************************************************************************
@@ -274,7 +274,7 @@
 							<tfoot>
 							<tr>
 							<th scope="row">Total</th>
-							<td colspan="6"><?php echo $resultat->num_rows ?> produits pour cette commande</td>
+							<td colspan="6"><?php echo mysqli_num_rows($resultat)?> produits pour cette commande</td>
 							<td colspan="3"><?php echo $cde['montant'] ?>€ TTC</td>
 							</tr>
 							</tfoot>
@@ -287,7 +287,7 @@
 
 					// 2ème ligne de tableau et suivantes **********************
 
-						while($ligne = $resultat->fetch_assoc())
+						while($ligne = mysqli_fetch_assoc($resultat))
 						{
 							//debug($ligne);
 ?>

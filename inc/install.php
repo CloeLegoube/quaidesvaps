@@ -5,6 +5,7 @@
 	include("fonction_inc.php");
 
 	define("RACINE_SITE", "http://localhost:8080/Rush_branch/"); // On écrit le chemin de notre site. Si on le change de place, on aura simplement à changer cette constante.
+
 	//echo RACINE_SITE;
 
 	$msg =""; // créer une variable egale à rien qui va servir à communiquer avec l'internaute concernant les messages d'erreur.

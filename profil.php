@@ -16,8 +16,9 @@ if(isset($_POST['modification']))
 {
 	$href = "profil.php";
 	$resultat = execute_requete("SELECT * FROM membre WHERE id_membre = '".$_SESSION['utilisateur']['id_membre']."'");
-	if($resultat->num_rows == 0 && isset($_GET['action']) && $_GET['action']== "update")
+	if(mysqli_num_rows($resultat)== 0 && isset($_GET['action']) && $_GET['action']== "update")
 	{
+
 		$msg .= '<div id="msg">
 			<p class="orange">Vous n\'êtes pas enregistré, merci de vous enregistrer.</p>
 			</div>';
@@ -39,6 +40,10 @@ if(isset($_POST['modification']))
 		}
 		if (strlen($_POST['mdp']) < 3 || strlen($_POST['mdp']) > 14 )
 		{
+
+			$id_membre = mysqli_fetch_assoc($resultat);
+			//echo $id_membre['id_membre'];
+
 			$msg .= '<div id="msg">
 				<p class="orange">Le mot de passe doit avoir entre 4 et 14 caractères inclus</p>
 				</div>';
@@ -60,7 +65,7 @@ if(isset($_POST['modification']))
 			if ($_POST['pseudo'] !== $_SESSION['utilisateur']['pseudo'])
 			{
 				$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
-				if($membre->num_rows > 0)
+				if(mysqli_num_rows($membre)> 0)
 				{
 					$msg .=  '<div id="msg">
 						<p class="orange">Pseudo déjà utilisé. Veuillez vous connecter à votre compte ou saisir un nouveau pseudo s\'il ne correspond pas au vôtre</p>
@@ -193,9 +198,10 @@ $profil = execute_requete("SELECT *
 	FROM commande
 	WHERE id_membre = ".$_SESSION['utilisateur']['id_membre']."");
 
-while($commande = $profil->fetch_assoc())
-{
-?>
+					while($commande = mysqli_fetch_assoc($profil))
+					{
+					?>
+
 
 						<div class="etat-commande">
 						<p><img src="<?php echo RACINE_SITE ?>image/shopping.png" alt="homme profil"/>
@@ -238,11 +244,12 @@ if(isset($_GET['id']))
 
 	//debug($resultat);
 
-	if($resultat->num_rows == 0){
-		echo'<div id="msg" ><p class="orange" id="titre_details_commande">Pas de détail pour la commande n° '.$_GET['id'].'</p></div>';
-		$_GET['action'] = "affichage";
-		$_GET['id'] = "0";
-	}else{
+					if(mysqli_num_rows($resultat)== 0){
+							 echo'<div id="msg" ><p class="orange" id="titre_details_commande">Pas de détail pour la commande n° '.$_GET['id'].'</p></div>';
+							$_GET['action'] = "affichage";
+							$_GET['id'] = "0";
+					}else{
+
 ?>
 
 							<table class="tableau_admin" id="details_commande" summary="Gestion administrateur">
@@ -255,7 +262,8 @@ if(isset($_GET['id']))
 			AND p.id_produit = d.id_produit
 			GROUP BY id_details_commande");
 
-		$cde = $commande->fetch_assoc();
+								$cde = mysqli_fetch_assoc($commande);
+
 
 		echo "<div id='titre_details_commande' class='titre_h2 largeur_article'><h2>DETAIL DE LA COMMANDE n°".$_GET['id']." d'un montant de ".$cde['montant']."€ TTC </h2></div>";
 
@@ -292,7 +300,8 @@ if(isset($_GET['id']))
 			AND m.id_membre = c.id_membre
 			AND p.id_produit = d.id_produit ");
 
-		$somme = $total->fetch_assoc();
+					$somme = mysqli_fetch_assoc($total);
+
 
 		//************************************************************************************************
 ?>
@@ -300,7 +309,7 @@ if(isset($_GET['id']))
 							<tr>
 							<th colspan="3" scope="row">Total</th>
 							<td colspan="1"><?php echo $somme['SOMME'] ?>€ TTC</td>
-							<td colspan="4"><?php echo $resultat->num_rows ?> produits pour cette commande</td>
+							<td colspan="4"><?php echo mysqli_num_rows($resultat)?> produits pour cette commande</td>
 							</tr>
 							</tfoot>
 
@@ -312,9 +321,10 @@ if(isset($_GET['id']))
 
 		// 2ème ligne de tableau et suivantes **********************
 
-		while($ligne = $resultat->fetch_assoc())
-		{
-			//debug($ligne);
+						while($ligne = mysqli_fetch_assoc($resultat))
+						{
+							//debug($ligne);
+
 ?>
 
 							<tr>
