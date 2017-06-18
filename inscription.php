@@ -4,7 +4,7 @@
 
 	if(isset($_POST['inscription'])) // ISSET = existe . Si le formulaire a été soumis.
 	{
-		//$mysqli->query(""); Ici on devrait l'écrire mais on ne va pas écrire cette requête comme ça. On va appeler plutôt la fonction qui aura été créée préalablement dans fonction_inc.php. La requête s'appellera désormais : execute_requete ($req)
+		//mysqli_query ($mysqli, ""); Ici on devrait l'écrire mais on ne va pas écrire cette requête comme ça. On va appeler plutôt la fonction qui aura été créée préalablement dans fonction_inc.php. La requête s'appellera désormais : execute_requete ($req)
 
 
 
@@ -42,7 +42,7 @@
 						/*$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
 							// Est-ce qu'il y a une ligne avec le même pseudo posté?
 
-						if($membre->num_rows >0)
+						if(mysqli_num_rows($membre)>0)
 							{
 								$msg .= "<div class='erreur'>Pseudo déjà utilisé. Veuillez vous connecter à votre compte ou saisir un nouveau pseudo s'il ne correspond pas au vôtre</div>";
 							}*/
@@ -125,7 +125,7 @@
 			$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
 			// Est-ce qu'il y a une ligne avec le même pseudo posté?
 
-			if($membre->num_rows >0)
+			if(mysqli_num_rows($membre)>0)
 			{
 				$msg .=  '<div id="msg">
 						<p class="orange">Pseudo déjà utilisé. Veuillez vous connecter à votre compte ou saisir un nouveau pseudo s\'il ne correspond pas au vôtre</p>
@@ -284,7 +284,7 @@
 						if($_SERVER['HTTP_REFERER'] == RACINE_SITE."panier.php")
 						{
 							$membre = execute_requete("SELECT * FROM membre WHERE id_membre = '".$_SESSION['utilisateur']['id_membre']."'");
-							$membre_connecte = $membre->fetch_assoc();
+							$membre_connecte = mysqli_fetch_assoc($membre);
 						?>
 
 

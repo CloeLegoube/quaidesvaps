@@ -28,7 +28,7 @@
 
 				//*****************************************************************************************
 
-				if($resultat->num_rows == 0 && isset($_GET['action']) && $_GET['action']== "update")
+				if(mysqli_num_rows($resultat)== 0 && isset($_GET['action']) && $_GET['action']== "update")
 		{
 			$msg .= '<div id="msg">
 						<p class="orange">Vous n\'êtes pas enregistré, merci de vous enregistrer.</p>
@@ -38,7 +38,7 @@
 		else     //*****************************************************************************************
 		{
 
-			$id_membre = $resultat -> fetch_assoc();
+			$id_membre = mysqli_fetch_assoc($resultat);
 			//echo $id_membre['id_membre'];
 			$msg .= '<div id="msg">
 						<p class="vert">Votre compte a été actualisé.</p>
@@ -260,7 +260,7 @@
 								FROM commande
 								WHERE id_membre = ".$_SESSION['utilisateur']['id_membre']."");
 
-					while($commande = $profil->fetch_assoc())
+					while($commande = mysqli_fetch_assoc($profil))
 					{
 					?>
 
@@ -305,7 +305,7 @@
 
 					//debug($resultat);
 
-					if($resultat->num_rows == 0){
+					if(mysqli_num_rows($resultat)== 0){
 							 echo'<div id="msg" ><p class="orange" id="titre_details_commande">Pas de détail pour la commande n° '.$_GET['id'].'</p></div>';
 							$_GET['action'] = "affichage";
 							$_GET['id'] = "0";
@@ -322,7 +322,7 @@
 								AND p.id_produit = d.id_produit
 								GROUP BY id_details_commande");
 
-								$cde = $commande->fetch_assoc();
+								$cde = mysqli_fetch_assoc($commande);
 
 								echo "<div id='titre_details_commande' class='titre_h2 largeur_article'><h2>DETAIL DE LA COMMANDE n°".$_GET['id']." d'un montant de ".$cde['montant']."€ TTC </h2></div>";
 
@@ -359,7 +359,7 @@
 					AND m.id_membre = c.id_membre
 					AND p.id_produit = d.id_produit ");
 
-					$somme = $total->fetch_assoc();
+					$somme = mysqli_fetch_assoc($total);
 
 					//************************************************************************************************
 ?>
@@ -367,7 +367,7 @@
 							<tr>
 							<th colspan="3" scope="row">Total</th>
 							<td colspan="1"><?php echo $somme['SOMME'] ?>€ TTC</td>
-							<td colspan="4"><?php echo $resultat->num_rows ?> produits pour cette commande</td>
+							<td colspan="4"><?php echo mysqli_num_rows($resultat)?> produits pour cette commande</td>
 							</tr>
 							</tfoot>
 
@@ -379,7 +379,7 @@
 
 					// 2ème ligne de tableau et suivantes **********************
 
-						while($ligne = $resultat->fetch_assoc())
+						while($ligne = mysqli_fetch_assoc($resultat))
 						{
 							//debug($ligne);
 ?>

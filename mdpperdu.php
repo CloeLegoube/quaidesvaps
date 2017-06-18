@@ -8,10 +8,10 @@
 		//echo "<pre>";print_r($_POST);echo"</pre>";
 		$selection_membre = execute_requete ("SELECT * FROM membre WHERE email ='$_POST[email]'"); // Ici on prépare une variable qui va conserver la réponse mysqli sur la requête ci-dessus. Mais cette variable est inexploitable.
 
-		if($selection_membre->num_rows >0) // Est-ce que Mysqli a retourné une ligne donc est-ce que le pseudo existe en base ? Est-ce donc le bon pseudo ?
+		if(mysqli_num_rows($selection_membre)>0) // Est-ce que Mysqli a retourné une ligne donc est-ce que le pseudo existe en base ? Est-ce donc le bon pseudo ?
 			{
 				//*****************************
-				$membre = $selection_membre -> fetch_assoc (); // On rend les données exploitables. Etape obligatoire après une requête de selection.
+				$membre = mysqli_fetch_assoc($selection_membre); // On rend les données exploitables. Etape obligatoire après une requête de selection.
 				//echo "<pre>";print_r($membre);echo"</pre>";
 
 				// ICI on transforme INSERT INTO en REPLACE INTO et on ajoute $_POST[id_article] pour récupérer la valeur

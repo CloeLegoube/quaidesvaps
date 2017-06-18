@@ -10,7 +10,7 @@
 //***************************************************************************************************************
 	if(isset($_POST['inscription'])) // ISSET = existe . Si le formulaire a été soumis.
 	{
-		//$mysqli->query(""); Ici on devrait l'écrire mais on ne va pas écrire cette requête comme ça. On va appeler plutôt la fonction qui aura été créée préalablement dans fonction_inc.php. La requête s'appellera désormais : execute_requete ($req)
+		//mysqli_query ($mysqli, ""); Ici on devrait l'écrire mais on ne va pas écrire cette requête comme ça. On va appeler plutôt la fonction qui aura été créée préalablement dans fonction_inc.php. La requête s'appellera désormais : execute_requete ($req)
 //** PSEUDO *************************************
 		$verif_caractere = preg_match('#^[a-zA-Z0-9._-]+$#' , $_POST['pseudo']);
 		// Ceci est une expression régulière (REGEX) qui limite les caractères qu'on doit retrouver dans le pseudo
@@ -39,7 +39,7 @@
 						/*$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
 							// Est-ce qu'il y a une ligne avec le même pseudo posté?
 
-						if($membre->num_rows >0)
+						if(mysqli_num_rows($membre)>0)
 							{
 								$msg .= "<div class='erreur'>Pseudo déjà utilisé. Veuillez vous connecter à votre compte ou saisir un nouveau pseudo s'il ne correspond pas au vôtre</div>";
 							}*/
@@ -109,7 +109,7 @@
 			$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
 			// Est-ce qu'il y a une ligne avec le même pseudo posté?
 
-			if($membre->num_rows >0)
+			if(mysqli_num_rows($membre)>0)
 			{
 				$msg .=  '<div id="msg">
 						<p class="orange">Pseudo déjà utilisé. Veuillez vous connecter à votre compte ou saisir un nouveau pseudo s\'il ne correspond pas au vôtre</p>
@@ -153,10 +153,10 @@
 	{
 		//echo "<pre>";print_r($_POST);echo"</pre>";
 		$selection_membre = execute_requete ("SELECT * FROM membre WHERE pseudo ='$_POST[pseudo]'"); // Ici on prépare une variable qui va conserver la réponse mysqli sur la requête ci-dessus. Mais cette variable est inexploitable.
-		if($selection_membre->num_rows >0) // Est-ce que Mysqli a retourné une ligne donc est-ce que le pseudo existe en base ? Est-ce donc le bon pseudo ?
+		if(mysqli_num_rows($selection_membre)>0) // Est-ce que Mysqli a retourné une ligne donc est-ce que le pseudo existe en base ? Est-ce donc le bon pseudo ?
 			{
 				//*****************************
-				$membre = $selection_membre -> fetch_assoc (); // On rend les données exploitables. Etape obligatoire après une requête de selection.
+				$membre = mysqli_fetch_assoc($selection_membre); // On rend les données exploitables. Etape obligatoire après une requête de selection.
 				//echo "<pre>";print_r($membre);echo"</pre>";
 				if($membre['mdp'] == $_POST['mdp']) // Est-ce que le MDP dans la BDD correspond au MDP posté par l'internaute.
 				{

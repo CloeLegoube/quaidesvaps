@@ -46,7 +46,7 @@
 				FROM produit p
 				WHERE p.id_produit = $_POST[id_produit]
 				GROUP BY  p.id_produit");
-				$produit = $resultat -> fetch_assoc ();
+				$produit = mysqli_fetch_assoc($resultat);
 
 				//debug($produit);
 
@@ -59,7 +59,7 @@
 
 					$resultat = execute_requete("SELECT * FROM promotion
 					WHERE ".$produit['id_promo']." = id_promo");
-					$promotion = $resultat -> fetch_assoc ();
+					$promotion = mysqli_fetch_assoc($resultat);
 					//debug($promotion);
 
 					ajout_produit_au_panier($produit['titre'], $produit['id_produit'], $produit['photo'], $produit['descriptif'],$_POST['quantite'], $produit['fidelite'], $produit['categorie'], $produit['prix'], $produit['prix_promo'], $produit['id_promo'], $promotion['code_promo'], $promotion['reduction'] );
@@ -86,7 +86,7 @@
 				FROM produit p
 				WHERE p.id_produit = $_POST[id_produit]
 				GROUP BY  p.id_produit");
-				$produit = $resultat -> fetch_assoc ();
+				$produit = mysqli_fetch_assoc($resultat);
 
 				//debug($produit);
 
@@ -99,7 +99,7 @@
 
 					$resultat = execute_requete("SELECT * FROM promotion
 					WHERE ".$produit['id_promo']." = id_promo");
-					$promotion = $resultat -> fetch_assoc ();
+					$promotion = mysqli_fetch_assoc($resultat);
 					//debug($promotion);
 
 					ajout_produit_au_panier($produit['titre'], $produit['id_produit'], $produit['photo'], $produit['descriptif'],$_POST['quantite'], $produit['fidelite'], $produit['categorie'], $produit['prix'], $produit['prix_promo'], $produit['id_promo'], $promotion['code_promo'], $promotion['reduction'] );

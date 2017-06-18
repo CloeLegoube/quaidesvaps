@@ -19,7 +19,7 @@ $compte = execute_requete("SELECT nom_categorie
 					onmouseout="this.src='<?php echo RACINE_SITE ?>image/icone_home.png'"/></a>
 					</div>
 					<?php
-					while ($cat = $compte->fetch_assoc())
+					while ($cat = mysqli_fetch_assoc($compte))
 					{
 					?>
 					<a href="<?php echo RACINE_SITE ?>boutique.php?cat=<?php echo $cat['nom_categorie'];?>"><?php echo $cat['nom_categorie'];?></a>

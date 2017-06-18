@@ -3,7 +3,7 @@ $mysqli =  @new Mysqli("localhost", "root", "root", "rush003");
 // On se connecte et on crée un objet mysqli
 // Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
 
- $mysqli->query("SET NAMES UTF8");
+ mysqli_query ($mysqli, "SET NAMES UTF8");
  /* Modification du jeu de résultats en utf8 */
 
  if (!$mysqli->set_charset("utf8")) {

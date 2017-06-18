@@ -37,7 +37,7 @@
 
 
 
-	if($fiche_produit->num_rows == 0) //Est-ce que le produit cliqué n'existe plus en base ? (il peut avoir été supprimé)
+	if(mysqli_num_rows($fiche_produit)== 0) //Est-ce que le produit cliqué n'existe plus en base ? (il peut avoir été supprimé)
 	{
 		header("location:boutique.php"); // On redirige vers boutique
 
@@ -55,7 +55,7 @@
 // ---------------------------- Exploitation de la requête -------------------------------------
 
 
-	$produit = $fiche_produit->fetch_assoc();
+	$produit = mysqli_fetch_assoc($fiche_produit);
 			//debug($produit);
 
 			//$produit['id_produit'];
@@ -93,7 +93,7 @@
 				FROM produit p
 				WHERE p.id_produit = $_POST[id_produit]
 				GROUP BY  p.id_produit");
-				$produit = $resultat -> fetch_assoc ();
+				$produit = mysqli_fetch_assoc($resultat);
 
 				//debug($produit);
 
@@ -106,7 +106,7 @@
 
 					$resultat = execute_requete("SELECT * FROM promotion
 					WHERE ".$produit['id_promo']." = id_promo");
-					$promotion = $resultat -> fetch_assoc ();
+					$promotion = mysqli_fetch_assoc($resultat);
 					//debug($promotion);
 
 					ajout_produit_au_panier($produit['titre'], $produit['id_produit'], $produit['photo'], $produit['descriptif'],$_POST['quantite'], $produit['fidelite'], $produit['categorie'], $produit['prix'], $produit['prix_promo'], $produit['id_promo'], $promotion['code_promo'], $promotion['reduction'] );

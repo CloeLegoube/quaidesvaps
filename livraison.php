@@ -44,7 +44,7 @@
 				FROM produit p
 				WHERE p.id_produit = $_POST[id_produit]
 				GROUP BY  p.id_produit");
-				$produit = $resultat -> fetch_assoc ();
+				$produit = mysqli_fetch_assoc($resultat);
 
 				//debug($produit);
 
@@ -57,8 +57,7 @@
 
 					$resultat = execute_requete("SELECT * FROM promotion
 					WHERE ".$produit['id_promo']." = id_promo");
-					$promotion = $resultat -> fetch_assoc ();
-					//debug($promotion);
+					$promotion = mysqli_fetch_assoc($resultat);
 
 					ajout_produit_au_panier($produit['titre'], $produit['id_produit'], $produit['photo'], $produit['descriptif'],$_POST['quantite'], $produit['fidelite'], $produit['categorie'], $produit['prix'], $produit['id_promo'], $promotion['code_promo'], $promotion['reduction'] );
 				};
@@ -118,7 +117,7 @@
 						// $i correspond à l'indice du tableau array $_SESSION['panier']['id_produit'] pour aller chercher chaque ligne du produit
 
 						$resultat = execute_requete("SELECT * FROM produit WHERE id_produit = '".$_SESSION['panier']['id_produit'][$i]."'");
-						$produit = $resultat->fetch_assoc();
+						$produit = mysqli_fetch_assoc($resultat);
 
 
 						if($produit['stock'] < $_SESSION['panier']['quantite'][$i])
@@ -173,7 +172,8 @@
 						};
 
 						// Ici il va falloir aller chercher id de la dernière commande enregistrée dans la table commande
-						$id_commande = $mysqli -> insert_id;
+						$id_commande = mysqli_insert_id ($mysqli);
+						
 
 
 						for($i = 0; $i < count($_SESSION['panier']['id_produit']); $i++)
@@ -238,7 +238,7 @@
 
 							//debug($resultat);
 
-							if($resultat->num_rows == 0){
+							if(mysqli_num_rows($resultat)== 0){
 									echo "<p class='CA'>Pas de détail pour cette commande</p>";
 							}else{
 
@@ -247,7 +247,7 @@
 
 							// 2ème ligne de tableau et suivantes **********************
 
-							while($ligne = $resultat->fetch_assoc())
+							while($ligne = mysqli_fetch_assoc($resultat))
 							{
 
 									$contenu.= "<p class='CA'>Détail de la commande n°".$ligne['id_commande']." : </p>";
@@ -573,7 +573,7 @@
 						<?php
 
 							$membre = execute_requete("SELECT * FROM membre WHERE id_membre = '".$_SESSION['utilisateur']['id_membre']."'");
-							$membre_connecte = $membre->fetch_assoc();
+							$membre_connecte = mysqli_fetch_assoc($membre);
 						?>
 
 
@@ -622,7 +622,7 @@
 <h4>Découvrez les produits associés</h4>
 
 <?php
-			while($produit_assoc = $comptage->fetch_assoc()){
+			while($produit_assoc = mysqli_fetch_assoc($comptage)){
 ?>
 
 

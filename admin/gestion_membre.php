@@ -25,7 +25,7 @@
 			$resultat = execute_requete("SELECT *
 			FROM membre m
 			WHERE id_membre = '$_GET[id]'");
-			$produit_supp = $resultat->fetch_assoc();
+			$produit_supp = mysqli_fetch_assoc($resultat);
 
 
 
@@ -49,7 +49,7 @@
 
 			$comptage = execute_requete('SELECT id_produit FROM produit');
 			//debug($comptage);
-			$nb_produit = $comptage->num_rows;
+			$nb_produit = mysqli_num_rows($comptage);
 			$nb_produit_page = 6;
 			$nb_pages = ceil($nb_produit / $nb_produit_page);
 
@@ -82,7 +82,7 @@
 
 				//*****************************************************************************************
 
-				if($id_membre->num_rows != 0 /* PRECISIONS : */ && isset($_GET['action'])&& $_GET['action'] == "ajout")
+				if(mysqli_num_rows($id_membre)!= 0 /* PRECISIONS : */ && isset($_GET['action'])&& $_GET['action'] == "ajout")
 		{
 			$msg .= '<div id="msg">
 						<p class="orange">Réference déjà attribuée à un membre. Merci de vérifier votre saisie.</p>
@@ -94,9 +94,9 @@
 		{	// ICI on transforme INSERT INTO en REPLACE INTO et on ajoute $_POST[id_membre] pour récupérer la valeur
 			// Rappel : REPLACE permet de faire UPDATE et INSERT en même temps (pour le cas de la modification).
 
-			$prenom = $mysqli->real_escape_string($_POST['prenom']);
-			$nom = $mysqli->real_escape_string($_POST['nom']);
-			$adresse = $mysqli->real_escape_string($_POST['adresse']);
+			$prenom = mysqli_real_escape_string ($mysqli, $_POST['prenom']);
+			$nom = mysqli_real_escape_string ($mysqli, $_POST['nom']);
+			$adresse = mysqli_real_escape_string ($mysqli, $_POST['adresse']);
 
 			execute_requete("REPLACE INTO membre VALUES
 			('$_POST[id_membre]','$_POST[pseudo]','$_POST[mdp]','$nom','$prenom', '$_POST[naissance]','$_POST[email]', '$_POST[telephone]','$_POST[sexe]','$_POST[ville]','$_POST[cp]','$adresse','$_POST[statut]','','','' )");
@@ -257,7 +257,7 @@
 					<tfoot>
 					<tr>
 					<th scope="row">Total</th>
-					<td colspan="11"><?php echo $resultat->num_rows ?> membres</td>
+					<td colspan="11"><?php echo mysqli_num_rows($resultat)?> membres</td>
 					</tr>
 					</tfoot>
 
@@ -266,7 +266,7 @@
 
 <?php
 
-							while($ligne = $resultat->fetch_assoc())
+							while($ligne = mysqli_fetch_assoc($resultat))
 				{
 					?>
 
@@ -314,7 +314,7 @@
 
 		{
 			$resultat = execute_requete("SELECT * FROM membre WHERE id_membre = '$_GET[id]'");
-			$_POST = $resultat -> fetch_assoc ();
+			$_POST = mysqli_fetch_assoc($resultat);
 
 			// Ici on aura pu donner un autre nom à cette variable ex : $modif et dire que $_POST = $modif mais on a raccourci l'opération en écrivant directement $_POST. Il faut se souvenir que la superglobal $_POST fonctionne pour l'ajout d'un membre mais pas pour la modification car on ne soumet pas de formulaire, donc va lui dire quoi aller chercher pour remplir $_POST.
 		}
