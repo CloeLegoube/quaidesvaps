@@ -99,240 +99,234 @@ if(isset($_POST['payer'])) // Est-ce que l'internaute a cliqué sur payer ?
 	if(!utilisateur_est_connecte())
 	{
 		header("location:inscription.php");
+	}
+	else if (!empty($_SESSION['panier']['id_produit']))
+	{
+	if(isset($_POST['conditions_generales'])){
+
+	for($i= 0; $i < count ($_SESSION['panier']['id_produit']); $i++) // J'execute autant de fois que j'ai de produit
+	{
+
+		//On vérifie la quantité en stock avec une requête de selection pour chaque produit avec l'id_produit de la session
+		// $i correspond à l'indice du tableau array $_SESSION['panier']['id_produit'] pour aller chercher chaque ligne du produit
+
+		$resultat = execute_requete("SELECT * FROM produit WHERE id_produit = '".$_SESSION['panier']['id_produit'][$i]."'");
+		$produit = mysqli_fetch_assoc($resultat);
 
 
-	}else{
+		if($produit['stock'] < $_SESSION['panier']['quantite'][$i])
+			// Est-ce que stock réel (en base) est inférieur à la quantité demandée dans le panier ?
+		{
+			// ----------------- RUPTURE DE STOCK -------------
+
+			// Rupture de stock = On retire le produit du panier
+			/*L'avantage de cette fonction, ou désavantage  (array_splice) :-), c'est qu'il RENOMME les indices lorsqu'il en a supprimé 1 donc il ne faudra pas oublier de décrémenter pour stopper l'action de suppression si on est dans un FOR (voir panier.php)*/
 
 
-
-
-
-
-		if(isset($_POST['conditions_generales'])){
-
-			for($i= 0; $i < count ($_SESSION['panier']['id_produit']); $i++) // J'execute autant de fois que j'ai de produit
-			{
-
-				//On vérifie la quantité en stock avec une requête de selection pour chaque produit avec l'id_produit de la session
-				// $i correspond à l'indice du tableau array $_SESSION['panier']['id_produit'] pour aller chercher chaque ligne du produit
-
-				$resultat = execute_requete("SELECT * FROM produit WHERE id_produit = '".$_SESSION['panier']['id_produit'][$i]."'");
-				$produit = mysqli_fetch_assoc($resultat);
-
-
-				if($produit['stock'] < $_SESSION['panier']['quantite'][$i])
-					// Est-ce que stock réel (en base) est inférieur à la quantité demandée dans le panier ?
-				{
-					// ----------------- RUPTURE DE STOCK -------------
-
-					// Rupture de stock = On retire le produit du panier
-					/*L'avantage de cette fonction, ou désavantage  (array_splice) :-), c'est qu'il RENOMME les indices lorsqu'il en a supprimé 1 donc il ne faudra pas oublier de décrémenter pour stopper l'action de suppression si on est dans un FOR (voir panier.php)*/
-
-
-					$msg .= "<div class='erreur'>Nous sommes désolés, le produit ".$_SESSION['panier']['id_produit'][$i]." n'est plus disponible. Il a été retiré de votre panier car un autre membre vient de le réserver. Veuillez s'il vous plait vérifier et modifier votre commande</div>";
-					retirer_produit_du_panier($i);
-					$i--; // $i = $i-1
+			$msg .= "<div class='erreur'>Nous sommes désolés, le produit ".$_SESSION['panier']['id_produit'][$i]." n'est plus disponible. Il a été retiré de votre panier car un autre membre vient de le réserver. Veuillez s'il vous plait vérifier et modifier votre commande</div>";
+			retirer_produit_du_panier($i);
+			$i--; // $i = $i-1
 
 
 
 
-				} //------ FIN du stock réel inférieur au stock demandé
+		} //------ FIN du stock réel inférieur au stock demandé
 
-			} //---------- FIN du FOR
+	} //---------- FIN du FOR
 
-			$verif_caractere_code_postal = preg_match('#^[0-9]+$#' , $_POST['cp']);
-			if(!$verif_caractere_code_postal && strlen($_POST['cp'])!=5)
-			{
-				$msg .=  '<div id="msg">
-					<p class="orange">Veuillez rentrer un code postal valide</p>
-					</div>';
-			}
-			if (empty($_POST['ville']))
-			{
-				$msg .= '<div id="msg">
-					<p class="orange">Veuillez remplir le champs ville</p>
-					</div>';
-			}
-			if (empty($_POST['adresse']))
-			{
-				$msg .= '<div id="msg">
-					<p class="orange">Veuillez remplir le champs adresse</p>
-					</div>';
-			}
+	$verif_caractere_code_postal = preg_match('#^[0-9]+$#' , $_POST['cp']);
+	if(!$verif_caractere_code_postal && strlen($_POST['cp'])!=5)
+	{
+		$msg .=  '<div id="msg">
+			<p class="orange">Veuillez rentrer un code postal valide</p>
+			</div>';
+	}
+	if (empty($_POST['ville']))
+	{
+		$msg .= '<div id="msg">
+			<p class="orange">Veuillez remplir le champs ville</p>
+			</div>';
+	}
+	if (empty($_POST['adresse']))
+	{
+		$msg .= '<div id="msg">
+			<p class="orange">Veuillez remplir le champs adresse</p>
+			</div>';
+	}
 
-			//**********************************************************************************************************
+	//**********************************************************************************************************
 
-			// ----------------------- INSERTION TABLES COMMANDES --------------------------------------------
+	// ----------------------- INSERTION TABLES COMMANDES --------------------------------------------
 
 
-			// S'il n'y a aucune erreur alors on crée une requête d'insertion pour rentrer les données dans la table commande.
-			// Il faut cependant calculer le montant total de la commande. Pour cela nous allons écrire une fonction
+	// S'il n'y a aucune erreur alors on crée une requête d'insertion pour rentrer les données dans la table commande.
+	// Il faut cependant calculer le montant total de la commande. Pour cela nous allons écrire une fonction
 
-			if(empty($msg))
-			{
-				foreach ($_POST as $key => $value)  // SECURITE / Ici on sécurise les données pour ne pas rentrer des caractères HTML et on empêche le navigateur d'intrepeter du code à la place du texte. On nettoie/purge toutes les entrées.
-				{
-					$_POST[$key] = htmlentities($value, ENT_QUOTES);
-					// ex: 1er tour de boucle = $_POST[$pseudo] = htmlentities('TOTO', ENT_QUOTES); toto est filtré.
-					// Pour le MDP, on peut crypter le mot de passe avec MD5 au lieu de htmlentities
+	if(empty($msg))
+	{
+		foreach ($_POST as $key => $value)  // SECURITE / Ici on sécurise les données pour ne pas rentrer des caractères HTML et on empêche le navigateur d'intrepeter du code à la place du texte. On nettoie/purge toutes les entrées.
+		{
+			$_POST[$key] = htmlentities($value, ENT_QUOTES);
+			// ex: 1er tour de boucle = $_POST[$pseudo] = htmlentities('TOTO', ENT_QUOTES); toto est filtré.
+			// Pour le MDP, on peut crypter le mot de passe avec MD5 au lieu de htmlentities
+		}
+
+		//--------------------------- 1ere requete insertion dans commande
+		if(isset($_SESSION['promotion']['montant_total_remise'][$j])){
+
+
+			execute_requete("INSERT INTO commande (id_membre, montant, date_commande, date_estimation, adresse, cp , ville, statut) VALUES ('".$_SESSION['utilisateur']['id_membre']."', ".$_SESSION['promotion']['montant_total_remise'][$j].", now(), now()+5, '".$_POST['adresse']."','".$_POST['cp']."','".$_POST['ville']."', 'En cours de traitement')");
+
+
+		}else{
+
+			execute_requete("INSERT INTO commande (id_membre, montant, date_commande, date_estimation, adresse, cp , ville, statut) VALUES ('".$_SESSION['utilisateur']['id_membre']."', '".montant()."', now(), now()+5, '".$_POST['adresse']."','".$_POST['cp']."','".$_POST['ville']."', 'En cours de traitement')");
+
+		};
+
+		// Ici il va falloir aller chercher id de la dernière commande enregistrée dans la table commande
+		$id_commande = mysqli_insert_id ($mysqli);
+
+
+
+		for($i = 0; $i < count($_SESSION['panier']['id_produit']); $i++)
+		{
+
+			//--------------------------- Insertion du code PROMO servant à la réduction
+			if(isset($_SESSION['promotion']['code_promo'][$j]) && $_SESSION['promotion']['code_promo'][$j] === $_SESSION['panier']['code_promo'][$i]){
+
+
+
+				if(!empty($_SESSION['panier']['prix_promo'][$i])){
+
+					execute_requete
+						("INSERT INTO details_commande (id_commande, id_produit, quantite, prix_promo, code_promo, reduction)
+						VALUES ($id_commande, ".$_SESSION['panier']['id_produit'][$i].", ".$_SESSION['panier']['quantite'][$i].", ".$_SESSION['panier']['prix_promo'][$i].", ".$_SESSION['panier']['code_promo'][$i].", ".$_SESSION['panier']['reduction'][$i].")");
+
+				}else{
+
+					//--------------------------- Insertion du prix promo
+
+					execute_requete
+						("INSERT INTO details_commande (id_commande, id_produit, quantite, prix_promo, code_promo, reduction)
+						VALUES ($id_commande, ".$_SESSION['panier']['id_produit'][$i].", ".$_SESSION['panier']['quantite'][$i].", ".$_SESSION['panier']['prix_promo'][$i].", ".$_SESSION['panier']['code_promo'][$i].", ".$_SESSION['panier']['reduction'][$i].")");
+
+
 				}
 
-				//--------------------------- 1ere requete insertion dans commande
-				if(isset($_SESSION['promotion']['montant_total_remise'][$j])){
+			}else{
+
+				//--------------------------- Insertion dans detais_commande avec un FOR puisqu'il va correspondre à chaque produit
+
+				execute_requete
+					("INSERT INTO details_commande (id_commande, id_produit, quantite, prix_promo, code_promo, reduction)
+					VALUES ($id_commande, ".$_SESSION['panier']['id_produit'][$i].", ".$_SESSION['panier']['quantite'][$i].", 0,0,0) 	");
+
+			}
+
+			//-------------------------3ème requete update dans produit pour mettre à jour le stock
+			execute_requete
+				("UPDATE produit
+				SET stock = stock - ".$_SESSION['panier']['quantite'][$i]."
+				WHERE id_produit = ".$_SESSION['panier']['id_produit'][$i]);
+
+		} // Fin du FOR
 
 
-					execute_requete("INSERT INTO commande (id_membre, montant, date_commande, date_estimation, adresse, cp , ville, statut) VALUES ('".$_SESSION['utilisateur']['id_membre']."', ".$_SESSION['promotion']['montant_total_remise'][$j].", now(), now()+5, '".$_POST['adresse']."','".$_POST['cp']."','".$_POST['ville']."', 'En cours de traitement')");
-
-
-				}else{
-
-					execute_requete("INSERT INTO commande (id_membre, montant, date_commande, date_estimation, adresse, cp , ville, statut) VALUES ('".$_SESSION['utilisateur']['id_membre']."', '".montant()."', now(), now()+5, '".$_POST['adresse']."','".$_POST['cp']."','".$_POST['ville']."', 'En cours de traitement')");
-
-				};
-
-				// Ici il va falloir aller chercher id de la dernière commande enregistrée dans la table commande
-				$id_commande = mysqli_insert_id ($mysqli);
-
-
-
-				for($i = 0; $i < count($_SESSION['panier']['id_produit']); $i++)
-				{
-
-					//--------------------------- Insertion du code PROMO servant à la réduction
-					if(isset($_SESSION['promotion']['code_promo'][$j]) && $_SESSION['promotion']['code_promo'][$j] === $_SESSION['panier']['code_promo'][$i]){
-
-
-
-						if(!empty($_SESSION['panier']['prix_promo'][$i])){
-
-							execute_requete
-								("INSERT INTO details_commande (id_commande, id_produit, quantite, prix_promo, code_promo, reduction)
-								VALUES ($id_commande, ".$_SESSION['panier']['id_produit'][$i].", ".$_SESSION['panier']['quantite'][$i].", ".$_SESSION['panier']['prix_promo'][$i].", ".$_SESSION['panier']['code_promo'][$i].", ".$_SESSION['panier']['reduction'][$i].")");
-
-						}else{
-
-							//--------------------------- Insertion du prix promo
-
-							execute_requete
-								("INSERT INTO details_commande (id_commande, id_produit, quantite, prix_promo, code_promo, reduction)
-								VALUES ($id_commande, ".$_SESSION['panier']['id_produit'][$i].", ".$_SESSION['panier']['quantite'][$i].", ".$_SESSION['panier']['prix_promo'][$i].", ".$_SESSION['panier']['code_promo'][$i].", ".$_SESSION['panier']['reduction'][$i].")");
-
-
-						}
-
-					}else{
-
-						//--------------------------- Insertion dans detais_commande avec un FOR puisqu'il va correspondre à chaque produit
-
-						execute_requete
-							("INSERT INTO details_commande (id_commande, id_produit, quantite, prix_promo, code_promo, reduction)
-							VALUES ($id_commande, ".$_SESSION['panier']['id_produit'][$i].", ".$_SESSION['panier']['quantite'][$i].", 0,0,0) 	");
-
-					}
-
-					//-------------------------3ème requete update dans produit pour mettre à jour le stock
-					execute_requete
-						("UPDATE produit
-						SET stock = stock - ".$_SESSION['panier']['quantite'][$i]."
-						WHERE id_produit = ".$_SESSION['panier']['id_produit'][$i]);
-
-				} // Fin du FOR
-
-
-				//**********************************************************************************************************
-				//                         		  GENERER UN EMAIL DE CONFIRMATION
-				//**********************************************************************************************************
+		//**********************************************************************************************************
+		//                         		  GENERER UN EMAIL DE CONFIRMATION
+		//**********************************************************************************************************
 
 
 
-				//--- TABLEAU HTML ---------------------------------
+		//--- TABLEAU HTML ---------------------------------
 
-				$resultat = execute_requete("SELECT *
-					FROM commande c, details_commande d, membre m, produit p
-					WHERE c.id_commande = '$id_commande'
-					AND c.id_commande = d.id_commande
-					AND m.id_membre = c.id_membre
-					AND p.id_produit = d.id_produit
-					GROUP BY id_details_commande");
+		$resultat = execute_requete("SELECT *
+			FROM commande c, details_commande d, membre m, produit p
+			WHERE c.id_commande = '$id_commande'
+			AND c.id_commande = d.id_commande
+			AND m.id_membre = c.id_membre
+			AND p.id_produit = d.id_produit
+			GROUP BY id_details_commande");
 
-				//debug($resultat);
+		//debug($resultat);
 
-				if(mysqli_num_rows($resultat)== 0){
-					echo "<p class='CA'>Pas de détail pour cette commande</p>";
-				}else{
-
-
-					// Ici on aura pu donner un autre nom à cette variable ex : $modif et dire que $_POST = $modif mais on a raccourci l'opération en écrivant directement $_POST. Il faut se souvenir que la superglobal $_POST fonctionne pour l'ajout d'un commande mais pas pour la modification car on ne soumet pas de formulaire, donc va lui dire quoi aller chercher pour remplir $_POST.
-
-					// 2ème ligne de tableau et suivantes **********************
-
-					while($ligne = mysqli_fetch_assoc($resultat))
-					{
-
-						$contenu.= "<p class='CA'>Détail de la commande n°".$ligne['id_commande']." : </p>";
-						$contenu.= "<p class='CA'>Montant de votre commande : ".$ligne['montant']."€ TTC</p>";
-						// 1ère ligne de tableau****************************
-						$contenu.= "<table border = 4px>";
-
-						$contenu.= "<tr>";
-						$contenu.= "<th>Id Détails Commande</th>";
-						$contenu.= "<th>Id Membre</th>";
-						$contenu.= "<th>Pseudo</th>";
-						$contenu.= "<th>Id Produit</th>";
-						$contenu.= "<th>Produit</th>";
-						$contenu.= "<th>Date de votre commande</th>";
-						$contenu.= "<th>Date de livraison estimée</th>";
-						$contenu.= "<th>Prix</th>";
-						$contenu.= "</tr>";
-
-						//debug($ligne);
-
-						$contenu.= "<tr>";
-						$contenu.= "<td>".$ligne['id_details_commande']."</td>";
-						$contenu.= "<td>".$ligne['id_membre']."</td>";
-						$contenu.= "<td>".$ligne['pseudo']."</td>";
-						$contenu.= "<td>".$ligne['id_produit']."</td>";
-						$contenu.= "<td>".$ligne['titre']."</td>";
-						$contenu.= "<td>".$ligne['date_commande']."</td>";
-						$contenu.= "<td>".$ligne['date_estimation']."</td>";
-						$contenu.= "<td>".$ligne['prix']."€ HT</td>";
-						$contenu.= "</tr>";
-
-					}
+		if(mysqli_num_rows($resultat)== 0){
+			echo "<p class='CA'>Pas de détail pour cette commande</p>";
+		}else{
 
 
-					// ********************************************************
+			// Ici on aura pu donner un autre nom à cette variable ex : $modif et dire que $_POST = $modif mais on a raccourci l'opération en écrivant directement $_POST. Il faut se souvenir que la superglobal $_POST fonctionne pour l'ajout d'un commande mais pas pour la modification car on ne soumet pas de formulaire, donc va lui dire quoi aller chercher pour remplir $_POST.
 
-					$contenu.= "</table>";
+			// 2ème ligne de tableau et suivantes **********************
 
-					//--- FIN TABLEAU HTML -------------------------------
+			while($ligne = mysqli_fetch_assoc($resultat))
+			{
+
+				$contenu.= "<p class='CA'>Détail de la commande n°".$ligne['id_commande']." : </p>";
+				$contenu.= "<p class='CA'>Montant de votre commande : ".$ligne['montant']."€ TTC</p>";
+				// 1ère ligne de tableau****************************
+				$contenu.= "<table border = 4px>";
+
+				$contenu.= "<tr>";
+				$contenu.= "<th>Id Détails Commande</th>";
+				$contenu.= "<th>Id Membre</th>";
+				$contenu.= "<th>Pseudo</th>";
+				$contenu.= "<th>Id Produit</th>";
+				$contenu.= "<th>Produit</th>";
+				$contenu.= "<th>Date de votre commande</th>";
+				$contenu.= "<th>Date de livraison estimée</th>";
+				$contenu.= "<th>Prix</th>";
+				$contenu.= "</tr>";
+
+				//debug($ligne);
+
+				$contenu.= "<tr>";
+				$contenu.= "<td>".$ligne['id_details_commande']."</td>";
+				$contenu.= "<td>".$ligne['id_membre']."</td>";
+				$contenu.= "<td>".$ligne['pseudo']."</td>";
+				$contenu.= "<td>".$ligne['id_produit']."</td>";
+				$contenu.= "<td>".$ligne['titre']."</td>";
+				$contenu.= "<td>".$ligne['date_commande']."</td>";
+				$contenu.= "<td>".$ligne['date_estimation']."</td>";
+				$contenu.= "<td>".$ligne['prix']."€ HT</td>";
+				$contenu.= "</tr>";
+
+			}
 
 
-				};
+			// ********************************************************
+
+			$contenu.= "</table>";
+
+			//--- FIN TABLEAU HTML -------------------------------
+
+
+		};
 
 
 
-				//--------------------------VIDER LE PANIER
-				unset($_SESSION['panier']);
+		//--------------------------VIDER LE PANIER
+		unset($_SESSION['panier']);
 
 
-				//--------------------------MESSAGE DE VALIDATION
-				$msg .= '<div id="msg">
-					<p class="vert">Votre commande est validée.</p>
-					</div>';
+		//--------------------------MESSAGE DE VALIDATION
+		$msg .= '<div id="msg">
+			<p class="vert">Votre commande est validée.</p>
+			</div>';
 
 
-			} // FIN s'il n'y a pas de message d'erreur.
+	} // FIN s'il n'y a pas de message d'erreur.
 
 
-		}else{	//-------------- FIN du $_POST['conditions_generales']
+}else{	//-------------- FIN du $_POST['conditions_generales']
 
-			$msg .= '<div id="msg">
-				<p class="orange">Vous devez accepter les conditions générales de vente</p>
-				<p class="vert">Si vous avez saisi un code promo, merci de le saisir à nouveau.</p>
-				</div>';
+	$msg .= '<div id="msg">
+		<p class="orange">Vous devez accepter les conditions générales de vente</p>
+		<p class="vert">Si vous avez saisi un code promo, merci de le saisir à nouveau.</p>
+		</div>';
 
-		}
+}
 
 	} //-------------- FIN de utilisateur connecté
 } //-------------- FIN du $_POST['payer']
