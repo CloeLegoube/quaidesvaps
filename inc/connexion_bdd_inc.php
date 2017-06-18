@@ -1,10 +1,10 @@
 <?php
 $link = mysqli_connect("localhost", "root", "root");
-$sql = 'CREATE DATABASE rush001';
+$sql = 'CREATE DATABASE rushtest4';
 
 if (mysqli_query($link, $sql))
 {
-$mysqli =  @new Mysqli("localhost", "root", "root", "rush001");
+$mysqli =  @new Mysqli("localhost", "root", "root", "rushtest4");
 // On se connecte et on crée un objet mysqli
 // Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
  $mysqli->query("SET NAMES UTF8");
@@ -17,8 +17,8 @@ if($mysqli->connect_error)
 {
 		die('Un problème est survenu lors de la tentative de connexion à la BDD');
 }
-$link = mysqli_connect("localhost", "root", "root", "rush001");
-$query = file_get_contents("http://localhost:8080/Rush00/rush00_18h30.sql");
+$link = mysqli_connect("localhost", "root", "root", "rushtest4");
+$query = file_get_contents("http://localhost:8080/Rush_branch/rush00_19h30.sql");
     $array = explode(";\n", $query);
     for ($i=0; $i < count($array) ; $i++) {
         $str = $array[$i];
@@ -29,7 +29,7 @@ $query = file_get_contents("http://localhost:8080/Rush00/rush00_18h30.sql");
     }
 }
 else {
-	$mysqli =  @new Mysqli("localhost", "root", "root", "rush001");
+	$mysqli =  @new Mysqli("localhost", "root", "root", "rushtest4");
 	// On se connecte et on crée un objet mysqli
 	// Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
 	 $mysqli->query("SET NAMES UTF8");
