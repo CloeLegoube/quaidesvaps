@@ -655,32 +655,7 @@ while($produit_assoc = mysqli_fetch_assoc($comptage)){
 							</div>
 
 
-<?php
-	//**********************************************************************************************************
-	//                         			FORMULAIRE 'ajout_panier' QUANTITE SI STOCK
-	//**********************************************************************************************************
-
-
-	if($produit_assoc['stock'] >0) // Affiche le formulaire de selection de quantité s'il y a du stock
-	{
-		//---- DEBUT FORMULAIRE -----------------------------------------------------------------------------
-
-		echo "<form id='quantite' action='' method='post'>";
-		echo "<input type='hidden' name='id_produit' readonly value='$produit_assoc[id_produit]'/>";
-		echo "<input type='hidden' name='quantite' readonly value='1'/>";
-		echo "<input class='presentation_produit_associe' type='submit' name='ajout_panier_associe' value='Ajout au panier'/>";
-		echo "</form>";
-
-		//---- FIN FORMULAIRE -----------------------------------------------------------------------------
-
-	}
-	else
-	{
-		echo "<p>Rupture de stock</p>"; // S'il n'y a pas de stock (stock = 0)
-	}
-
-?>
-						</div>
+					</div>
 
 					</div>
 
