@@ -1,11 +1,11 @@
 <?php
 $link = mysqli_connect("localhost", "root", "root");
 
-$sql = 'CREATE DATABASE rushlasttest1';
+$sql = 'CREATE DATABASE adrien';
 
 if (mysqli_query($link, $sql))
 {
-$mysqli =  @new Mysqli("localhost", "root", "root", "rushlasttest1");
+$mysqli =  @new Mysqli("localhost", "root", "root", "adrien");
 
 // On se connecte et on crée un objet mysqli
 // Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
@@ -20,11 +20,12 @@ if(mysqli_connect_error())
 		die('Un problème est survenu lors de la tentative de connexion à la BDD');
 }
 
-$link = mysqli_connect("localhost", "root", "root", "rushlasttest1");
+$link = mysqli_connect("localhost", "root", "root", "adrien");
 $test = dirname(__FILE__);
 preg_match_all("/MyWebSite\/(.*?)\/inc/", $test, $tab);
 $file = $tab[1][0];
-$query = file_get_contents($file."rush00_19h30.sql");
+$file = "http://localhost:8080/".$file."/";
+$query = file_get_contents($file."rush00_21h30.sql");
 
     $array = explode(";\n", $query);
     for ($i=0; $i < count($array) ; $i++) {
@@ -37,7 +38,7 @@ $query = file_get_contents($file."rush00_19h30.sql");
 }
 else {
 
-	$mysqli =  @new Mysqli("localhost", "root", "root", "rushlasttest1");
+	$mysqli =  @new Mysqli("localhost", "root", "root", "adrien");
 
 	// On se connecte et on crée un objet mysqli
 	// Ici l'@ nous permet de gérer nous même l'erreur s'il y en a une.
