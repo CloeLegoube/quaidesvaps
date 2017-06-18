@@ -291,7 +291,7 @@
 
 			if(!utilisateur_est_connecte())
 			{
-						header("location:enregistrement.php");
+						header("location:connexion.php");
 			}else{
 						header("location:livraison.php");
 			}

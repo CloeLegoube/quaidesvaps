@@ -20,7 +20,7 @@
 				//*****************************
 				$membre = $selection_membre -> fetch_assoc (); // On rend les données exploitables. Etape obligatoire après une requête de selection.
 				//echo "<pre>";print_r($membre);echo"</pre>";
-				if($membre['mdp'] == $_POST['mdp']) // Est-ce que le MDP dans la BDD correspond au MDP posté par l'internaute.
+				if($membre['mdp'] == hash("whirlpool", $_POST['mdp'])) // Est-ce que le MDP dans la BDD correspond au MDP posté par l'internaute.
 				{
 					foreach($membre as $key => $value) // On récupère les infos de l'internaute enregistré dans une session
 					{
