@@ -1,26 +1,17 @@
 <?php
 	include("inc/install.php");
 	$result_age = "";
-
-
 		if(utilisateur_est_connecte())
 	{
 		header("location:livraison.php");
 	}
-
 //***************************************************************************************************************
 //*													INSCRIPTION
 //***************************************************************************************************************
-
 	if(isset($_POST['inscription'])) // ISSET = existe . Si le formulaire a été soumis.
 	{
 		//$mysqli->query(""); Ici on devrait l'écrire mais on ne va pas écrire cette requête comme ça. On va appeler plutôt la fonction qui aura été créée préalablement dans fonction_inc.php. La requête s'appellera désormais : execute_requete ($req)
-
-
-
-
 //** PSEUDO *************************************
-
 		$verif_caractere = preg_match('#^[a-zA-Z0-9._-]+$#' , $_POST['pseudo']);
 		// Ceci est une expression régulière (REGEX) qui limite les caractères qu'on doit retrouver dans le pseudo
 		//  '#^[    a-z   A-Z    0-9  ._-     ]$#'
@@ -31,15 +22,12 @@
 		// '#  #' entoure toujours notre expression REGEX
 		// Il existe aussi des expressions régulières pour vérifier un email.
 		// Preg_match attend 2 arguments (1,2)
-
 		if(!$verif_caractere && !empty($_POST['pseudo'])) //if FALSE et que $_POST[pseudo] n'est pas vide
 			{
 				$msg .= '<div id="msg">
 						<p class="orange">Le pseudo comporte des caractères non autorisés. Les caractères autorisés sont : A à Z et de 0 à 9</p>
 						</div>';
 			}
-
-
 		if (strlen($_POST['pseudo'])<3 || strlen($_POST['pseudo'])> 14 ) // Evalue la longeur du champ
 			{
 				$msg .= '<div id="msg">
@@ -47,7 +35,6 @@
 						</div>';
 				// .= signifie qu'on ajoute à la variable msg le texte ci-dessus.
 			}
-
 		///// A ECRIRE une seule fois, soit ici, soit en bas avant la requête comme ci-dessous /////
 						/*$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
 							// Est-ce qu'il y a une ligne avec le même pseudo posté?
@@ -72,11 +59,7 @@
 				$msg .= '<div id="msg">
 						<p class="orange">Mots de passe non identiques, veuillez ressaisir votre mot de passe.</p>
 						</div>';
-
-
 			}
-
-
 //** EMAIL *************************************
 
 		$verif_caractere_email = preg_match('#^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})+$#' , $_POST['email']);
@@ -86,11 +69,7 @@
 			$msg .= '<div id="msg">
 						<p class="orange">Veuillez rentrer une adresse email valide</p>
 						</div>';
-
-
 		}
-
-
 //** CODE POSTAL *********************************
 
 		$verif_caractere_code_postal = preg_match('#^[0-9]+$#' , $_POST['cp']);
@@ -100,7 +79,6 @@
 			$msg .=  '<div id="msg">
 						<p class="orange">Veuillez rentrer un code postal valide</p>
 						</div>';
-
 		}
 
 //** NOM PRENOM ADRESSE VILLE *********************************
@@ -110,7 +88,6 @@
 			$msg .=  '<div id="msg">
 						<p class="orange">Veuillez remplir tous les champs obligatoires (*)</p>
 						</div>';
-
 		}
 
 
@@ -125,13 +102,10 @@
 						</div>';
 
 		}
-
-
 //** EXECUTION DE LA REQUETE (si $msg est vide) **********************
 
 		if (empty($msg))
 		{
-
 			$membre = execute_requete("SELECT * FROM membre WHERE pseudo = '$_POST[pseudo]'");
 			// Est-ce qu'il y a une ligne avec le même pseudo posté?
 
@@ -141,44 +115,30 @@
 						<p class="orange">Pseudo déjà utilisé. Veuillez vous connecter à votre compte ou saisir un nouveau pseudo s\'il ne correspond pas au vôtre</p>
 						</div>';
 
-
 			}
-
-
 			else //........................................................
 			{
-
 				foreach ($_POST as $key => $value)  // SECURITE / Ici on sécurise les données pour ne pas rentrer des caractères HTML et on empêche le navigateur d'intrepeter du code à la place du texte. On nettoie/purge toutes les entrées.
 				{
 					$_POST[$key] = htmlentities($value, ENT_QUOTES);
 					// ex: 1er tour de boucle = $_POST[$pseudo] = htmlentities('TOTO', ENT_QUOTES); toto est filtré.
 					// Pour le MDP, on peut crypter le mot de passe avec MD5 au lieu de htmlentities
 				}
-
 					//*****************************************************************************************
-
 					$NAISSANCE = dateConvertFrEn($_POST['naissance']);
 					$result_age = age($NAISSANCE);
-
 					//Execution de la requête
 					execute_requete("INSERT INTO membre
 					(pseudo, mdp, nom, prenom, email, sexe, ville, cp, adresse, naissance, telephone, statut)
 					VALUES
 					('$_POST[pseudo]', '$_POST[mdp]', '$_POST[nom]', '$_POST[prenom]', '$_POST[email]', '$_POST[sexe]', '$_POST[ville]', '$_POST[cp]', '$_POST[adresse]', '$NAISSANCE', '$_POST[telephone]', 0) ");
-
-
 					//Puis affichage d'un message de réussite
 					$msg.= '<div id="msg">
 						<p class="vert">Félicitations! Vous venez de créer votre compte.</p>
 						</div>';
-
-
-
 					header ("location:livraison.php");
 
 			} // Fin du else ...................................................
-
-
 
 		} // Fin de if (empty($msg))
 
@@ -186,24 +146,18 @@
 
 } // Fin de la condition if(isset($_POST['inscription']))
 
-
 //***************************************************************************************************************
 //*													CONNEXION
 //***************************************************************************************************************
-
-
 	if(isset($_POST['connexion']))// Soyons précis car il peut y avoir plusieurs formulaires sur la même page. Est-ce que l'internaute a cliqué sur connexion ?
 	{
 		//echo "<pre>";print_r($_POST);echo"</pre>";
 		$selection_membre = execute_requete ("SELECT * FROM membre WHERE pseudo ='$_POST[pseudo]'"); // Ici on prépare une variable qui va conserver la réponse mysqli sur la requête ci-dessus. Mais cette variable est inexploitable.
-
 		if($selection_membre->num_rows >0) // Est-ce que Mysqli a retourné une ligne donc est-ce que le pseudo existe en base ? Est-ce donc le bon pseudo ?
 			{
 				//*****************************
 				$membre = $selection_membre -> fetch_assoc (); // On rend les données exploitables. Etape obligatoire après une requête de selection.
 				//echo "<pre>";print_r($membre);echo"</pre>";
-
-
 				if($membre['mdp'] == $_POST['mdp']) // Est-ce que le MDP dans la BDD correspond au MDP posté par l'internaute.
 				{
 					foreach($membre as $key => $value) // On récupère les infos de l'internaute enregistré dans une session
@@ -214,12 +168,7 @@
 						//echo "<pre>";print_r($_SESSION);echo"</pre>";
 						//header("location:profil.php");
 						//Ici on redirige l'internaute vers cette page mais ATTENTION il ne faut pas de code HTML ou d'echo au dessus de cette ligne.
-
-
 							header ("location:livraison.php");
-
-
-
 
 					//******************************************************************************
 					//**								COOKIES
@@ -235,12 +184,7 @@
 
 								$_SESSION['utilisateur']['pseudo'] = $_COOKIE ['cookname'];
 							}
-
-
 					//*****************************************************************************************
-
-
-
 				}
 				else //Si ce n'est pas le bon mot de passe alors :
 				{
@@ -258,24 +202,16 @@
 //**********************************************************************************************************
 //
 //**********************************************************************************************************
-
-
-
 	include("inc/haut_de_site_inc.php");
 	include("inc/top_menu_inc.php");
 	include("inc/menu_inc.php");
 
-
 	//**************** FIL D'ARIANE ************************* -->
-
 
    get_fil_ariane(array(
    'panier.php' => 'Mon panier',
    'final' => 'S\'enregistrer'
    ));
-
-
-
 
 //****************** MESSAGE ************************* -->
 
@@ -286,7 +222,6 @@
 <!-- **************************************************************************************** -->
 <!--  									DEUXIEME COLONNE									  -->
 <!-- **************************************************************************************** -->
-
 
 				<div id="colonne-unique" class="colonne2"> <!-- début colonne 2-->
 
