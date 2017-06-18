@@ -11,6 +11,14 @@
 
 	// -------------------------------------- ACTION de VIDER LE PANIER ------------------------------------
 	///[cf.1]
+	/*if (isset($_SESSION['panier']))
+	{
+					echo '<div id="msg">
+						<p class="orange">Votre panier est vider</p>
+						</div>';
+	
+	}*/
+
 	if(isset($_GET['action']) && $_GET['action'] == "vider")
 	{
 		unset($_SESSION['panier']); // unset permet de préciser et de vider un élément : ici la session du panier et non pas la session de l'utilisateur. session_destroy () n'aurait pas convenu.
@@ -291,9 +299,18 @@
 
 			if(!utilisateur_est_connecte())
 			{
-						header("location:enregistrement.php");
-			}else{
-						header("location:livraison.php");
+						header("location:connexion.php");
+			}
+			else
+			{
+				if(empty($_SESSION['panier']['id_produit']))
+				{
+					header("location:panier.php");
+				}
+				else
+				{
+					header("location:livraison.php");
+				}
 			}
 
 

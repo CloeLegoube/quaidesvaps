@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Dim 18 Juin 2017 à 16:27
+-- Généré le :  Dim 18 Juin 2017 à 17:22
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.0
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `rush003`
+-- Base de données :  `rush00_4`
 --
 
 -- --------------------------------------------------------
@@ -84,7 +84,8 @@ INSERT INTO `commande` (`id_commande`, `montant`, `id_membre`, `date_commande`, 
 (33, 60, 2, '2017-06-17 21:13:15', '2017-06-17 21:13:20', '30 rue Saint S&eacute;bastien', 75010, 'Paris  ', 'En cours de traitement'),
 (34, 452, 10002, '2017-06-17 21:22:07', '2017-06-17 21:22:12', 'wefevvdghfh', 81310, 'wegfvav', 'En cours de traitement'),
 (35, 0, 1, '2017-06-18 17:42:37', '2017-06-18 17:42:42', 'rue Saint S&eacute;bastien', 75013, 'Paris ', 'En cours de traitement'),
-(36, 28, 1, '2017-06-18 17:43:26', '2017-06-18 17:43:31', 'rue Saint S&eacute;bastien', 75013, 'Paris ', 'En cours de traitement');
+(36, 28, 1, '2017-06-18 17:43:26', '2017-06-18 17:43:31', 'rue Saint S&eacute;bastien', 75013, 'Paris ', 'En cours de traitement'),
+(37, 60, 10004, '2017-06-18 19:11:37', '2017-06-18 19:11:42', 'qwer', 75017, 'qwer', 'En cours de traitement');
 
 -- --------------------------------------------------------
 
@@ -175,7 +176,8 @@ INSERT INTO `details_commande` (`id_details_commande`, `id_commande`, `id_produi
 (49, 33, 110, 1, 0, '0', '0'),
 (50, 34, 62, 1, 0, '0', '0'),
 (51, 34, 114, 7, 0, '0', '0'),
-(52, 36, 99, 7, 0, '0', '0');
+(52, 36, 99, 7, 0, '0', '0'),
+(53, 37, 115, 1, 0, '0', '0');
 
 -- --------------------------------------------------------
 
@@ -187,15 +189,6 @@ CREATE TABLE `membre` (
   `id_membre` int(5) NOT NULL,
   `pseudo` varchar(15) NOT NULL,
   `mdp` varchar(512) NOT NULL,
-  `nom` varchar(20) NOT NULL,
-  `prenom` varchar(20) NOT NULL,
-  `naissance` date NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `telephone` int(10) UNSIGNED ZEROFILL NOT NULL,
-  `sexe` enum('m','f') NOT NULL,
-  `ville` varchar(50) NOT NULL,
-  `cp` int(5) NOT NULL,
-  `adresse` varchar(30) NOT NULL,
   `statut` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -203,26 +196,8 @@ CREATE TABLE `membre` (
 -- Contenu de la table `membre`
 --
 
-INSERT INTO `membre` (`id_membre`, `pseudo`, `mdp`, `nom`, `prenom`, `naissance`, `email`, `telephone`, `sexe`, `ville`, `cp`, `adresse`, `statut`) VALUES
-(1, 'admin', 'admin', 'Administrateur', 'Jury', '1996-03-10', 'contact@quaidesvaps.fr', 0566247586, 'f', 'Paris ', 75013, 'rue Saint Sébastien', 1),
-(2, 'test', 'test', 'Le testeur', 'Monsieur', '1951-08-16', 'test@test.fr', 0612458590, 'f', 'Paris  ', 75010, '30 rue Saint Sébastien', 0),
-(3, 'Loulou', 'loulou123', 'Louisa', 'Corrioux', '1972-03-12', 'louisa@gmail.com', 0632856412, 'm', 'Nice', 56222, 'Adresse de Louisa', 0),
-(4, 'cloe1804', '', 'LEG', 'cloe', '1994-01-30', 'cloe.legoube@gmail.com', 0171529648, 'f', 'Meaux ', 77100, 'rue Cornillon', 0),
-(6, 'Tamy', 'tania123', 'Lamy', 'Tania', '1988-02-03', 'tania@gmail.com', 0652849661, 'f', 'Parçay', 37210, '3 rue de la Loire', 0),
-(9, 'sylvia', 'sylvia123', 'Masseron', 'Sylvia', '1960-04-19', 'masseron@hotmail.fr', 0237559426, 'f', 'Paris', 75013, '253 rue de la Paix', 0),
-(10, 'Carla', 'carla123', 'Bruni', 'Carla', '1950-07-25', 'carla@gmail.fr', 0625894562, 'f', 'Paris', 75013, '33 rue de la bastille', 0),
-(11, 'Louis', 'louis123', 'Joubert', 'Louis', '1985-04-23', 'louis@gmail.co', 0566247586, 'm', 'Bordeaux', 33210, 'rue de l&#039;espoir', 0),
-(12, 'Alfred', 'alfa123', 'Manouir', 'Alfred', '1975-03-12', 'manouir@hotmail.fr', 0645128495, 'm', 'Le Pouliguen', 44510, '85 rue de la mer', 0),
-(13, 'Mery', 'mery123', 'Grey', 'Meredith', '1978-05-02', 'grey@yahoo.fr', 0257489613, 'f', 'Marseille', 13000, 'Rue de la cannebi&egrave;re', 0),
-(14, 'Marine', 'marine123', 'Donnard', 'Marine', '1995-06-05', 'marine.donnard@hotmail.fr', 0345896245, 'f', 'Saint Brevin', 44238, '56 rue des mouettes', 0),
-(15, 'Abdel', 'abda123', 'Malik', 'Abdel', '1981-12-12', 'abdel@yahoo.fr', 0654589542, 'm', 'La plaine', 75013, '56 rue des minimes', 0),
-(16, 'Mimi25', 'mimi123', 'Lefol', 'Emilie', '1986-06-18', 'emilie.lefol@gmail.com', 0247559988, 'f', 'Baumont', 43526, '85 rue des souppirs', 0),
-(17, 'Emilien', 'milien123', 'Rocard', 'Emilien', '1986-06-01', 'milien@hotmail.fr', 0652345978, 'm', 'Lille', 15012, '417 rue du Nord', 0),
-(18, 'JOJO', 'jojo123', 'lamalice', 'Jojo', '1994-05-24', 'jojo@yahoo.fr', 0065248956, 'm', 'Quimper', 52600, 'jojo123', 0),
-(19, 'Marcel', 'marcel123', 'Pagnol', 'Marcel', '1985-05-24', 'pagnol@yahoo.fr', 0250859632, 'm', 'Rennes', 50600, '3 rue de la riviere', 0),
-(20, 'Philippine', 'pde', 'Pde-Maul', 'Philou', '1988-05-05', 'phillipine@gmail.com', 0613254789, 'f', 'Asni&egrave;res sur seine', 92600, '87 avenue de la Marne', 0),
-(21, 'pde', '123', 'maul', 'pde', '2075-05-20', 'pde-maul@free.fr', 0620468454, 'f', 'wegfvav', 81310, 'wefevvdghfh', 0),
-(22, 'lol', 'lol', 'pde', 'pde', '8000-05-20', 'lol@juju.fr', 1234567897, 'm', 'dvsfdgf', 87645, 'sgh', 0);
+INSERT INTO `membre` (`id_membre`, `pseudo`, `mdp`, `statut`) VALUES
+(10004, 'admin', '6a4e012bd9583858a5a6fa15f58bd86a25af266d3a4344f1ec2018b778f29ba83be86eb45e6dc204e11276f4a99eff4e2144fbe15e756c2c88e999649aae7d94', 0);
 
 -- --------------------------------------------------------
 
@@ -280,7 +255,7 @@ INSERT INTO `produit` (`id_produit`, `titre`, `photo`, `prix`, `prix_promo`, `ca
 (112, 'EGO case Rose', 'images/112-3204-EGO-Case-Rose.jpg', 22, 0, 'Accessoires', 19, 3204, 'Cette housse remplacera votre ancien paquet de cigarette. Vous pouvez y ranger votre e-cigarette, une batterie de rechange, le chargeur ainsi qu\'un atomisateur de rechange.\r\n\r\nCette housse est adaptée à nos modèles EGO.', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', 5),
 (113, 'E-liquide - Goût Vanille', 'images/-3108-Vanille.jpg', 5, 0, 'E-liquides', 11, 3108, 'Ce produit a été fabriqué par notre partenaire Dekang. \r\n\r\nQui est Dekang ? \r\n\r\nDekang est tout simplement le leader mondial de la fabrication de l\'e-liquide. Étant un des plus anciens acteurs du marché, il dispose d\'un savoir-faire unique et d\'un panel de saveur extraordinairement vaste. Dekang est réputé pour son sérieux et la qualité de ces e-liquides. Disposant d\'infrastructures certainement unique au monde sur ce secteur, Dekang garantit une qualité constante de fabrication et une application drastique des normes les plus exigeantes en terme de qualité et de sûreté. Dekang dispose notamment de la norme GMP, normes américaines allemandes (normes produits alimentaires pharmaceutiques). \r\n\r\nLes avantages Dekang ? \r\n\r\nSi nous avons choisi Dekang c\'est avant tout pour la qualité et la sûreté des e-liquides. De très (trop) nombreux produits vendus sur le marché actuellement proviennent d\'assembleurs dont les conditions de préparation sont totalement opaque. On ne peut pas plaisanter avec un produit inhalés par nos clients. Combien de liquide dis "Français" sont assemblés en "salle propre" respectant la norme GMP ?...', 0, '', 0, 0, 0, 'Tous nos e-liquides existent en 6 ml, 11ml,18 ml et 30ml', '', '', '', '', '', '', '', '', NULL),
 (114, 'Coffret Divine Blanc', 'images/114-1520-Coffret-Divine-Blanc.jpg', 60, 42, 'E-cigarettes,Accessoires', 25, 1520, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', NULL),
-(115, 'Coffret Divine Violet', 'images/115-1521-Coffret-Divine-Violet.jpg', 60, 42, 'E-cigarettes,Accessoires', 24, 1521, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', NULL),
+(115, 'Coffret Divine Violet', 'images/115-1521-Coffret-Divine-Violet.jpg', 60, 42, 'E-cigarettes,Accessoires', 23, 1521, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', NULL),
 (116, 'Coffret EGO bleue', 'images/116-1522-EGO-bleue-Coffret.jpg', 55, 0, 'E-cigarettes,Accessoires', 23, 1522, 'Coffret comprenant 2 e-cigarettes Divine couleur blanc avec leurs batteries et atomisateurs ainsi qu\'un chargeur USB ou sur secteur. Vous ne risquez plus de tomber en panne !', 0, '', 0, 0, 0, '', '', '', '', '', '', '', '', '', 5),
 (117, 'EGO premium Silver', 'images/117-1523-EGO-Premium-Silver.jpg', 36, 0, 'E-cigarettes', 45, 1523, 'Le Kit e-smart Kanger est destiné aux petits et moyens vapoteurs E-cigarette raffinée, très simple à utiliser et entretenir', 22, 'Acier inoxydable', 59, 79, 5, 'Connecteur 510 réglable', 'Contrôle du tirage (airflow) avec bagues de couleur optionnelles', 'Plateau de construction modèle S ', 'Chambre d\'atomisation: Aluminium anodisé Ematal - isolante (voir ci-dessous)', 'Tank: Verre borosilicate dépoli, interchangeable', 'Drip tip custom ', 'Joints de rechange, vis de rechange, clef Allen inclus', '', '', 5);
 
@@ -365,7 +340,7 @@ ALTER TABLE `promotion`
 -- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
-  MODIFY `id_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 --
 -- AUTO_INCREMENT pour la table `details_categorie`
 --
@@ -375,12 +350,12 @@ ALTER TABLE `details_categorie`
 -- AUTO_INCREMENT pour la table `details_commande`
 --
 ALTER TABLE `details_commande`
-  MODIFY `id_details_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id_details_commande` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT pour la table `membre`
 --
 ALTER TABLE `membre`
-  MODIFY `id_membre` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10004;
+  MODIFY `id_membre` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10005;
 --
 -- AUTO_INCREMENT pour la table `produit`
 --
@@ -394,12 +369,6 @@ ALTER TABLE `promotion`
 --
 -- Contraintes pour les tables exportées
 --
-
---
--- Contraintes pour la table `commande`
---
-ALTER TABLE `commande`
-  ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`id_membre`) REFERENCES `membre` (`id_membre`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `details_categorie`
@@ -424,4 +393,3 @@ ALTER TABLE `produit`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-SET GLOBAL SQL_MODE = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
