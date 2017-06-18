@@ -57,10 +57,26 @@
 
 
 
-	include("inc/haut_de_site_inc.php");
-	include("inc/top_menu_inc.php");
-	include("inc/menu_inc.php");
+	//include("inc/haut_de_site_inc.php");
+	//include("inc/top_menu_inc.php");
+	//include("inc/menu_inc.php");
 
+		if($_GET["action"] == "delete")
+		{
+			$supp = $_GET['pseudo'];
+			if ($_SESSION['utilisateur']['pseudo'] === $supp)
+			{
+				header("location:connexion.php");
+				echo "Votre compte a bien etait supprimer\n";
+				echo $supp;
+				execute_requete("DELETE FROM membre WHERE pseudo LIKE '$supp'");
+				session_destroy();
+			}
+		}
+
+		include("inc/haut_de_site_inc.php");
+		include("inc/top_menu_inc.php");
+		include("inc/menu_inc.php");
 //**************** FIL D'ARIANE ************************* -->
 
 
@@ -122,7 +138,7 @@
 
 
 
-						
+
 						</div>
 
 						<div class="liens_produit">

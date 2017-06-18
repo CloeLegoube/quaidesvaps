@@ -134,6 +134,9 @@ else
 	$href = "profil.php?action=update#mettre_a_jour";
 }
 
+$hrefsupp = "index.php?action=delete&pseudo=".$_SESSION['utilisateur']['pseudo'];
+
+
 
 include("inc/haut_de_site_inc.php");
 include("inc/top_menu_inc.php");
@@ -158,6 +161,7 @@ if(utilisateur_est_connecte())
 			</div>
 			<div class="col3 bouton-ajout"><img src="<?php echo RACINE_SITE ?>image/modifier.gif" alt="feuille de papier icone"/><a href="<?php echo $href ?>">Modifier mon profil</a></div>
 			</div>
+			<div class="col3 bouton-ajout"><img src="<?php echo RACINE_SITE ?>image/modifier.gif" alt="feuille de papier icone"/><a href="<?php echo $hrefsupp ?>">Supprimer mon profil</a></div>
 			<div id="mettre_a_jour" class="clear"></div>
 <?php
 //**********************************************************************************************************

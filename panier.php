@@ -16,7 +16,7 @@
 					echo '<div id="msg">
 						<p class="orange">Votre panier est vider</p>
 						</div>';
-	
+
 	}*/
 
 	if(isset($_GET['action']) && $_GET['action'] == "vider")
