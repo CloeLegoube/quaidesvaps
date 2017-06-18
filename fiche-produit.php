@@ -296,7 +296,7 @@ if($produit['stock'] >0) // Affiche le formulaire de selection de quantité s'il
 
 
 					<!-- **************************************************************************************** -->
-					<!--  							ONGLETS DESCRIPTIFS ET AVIS									  -->
+					<!--  							ONGLETS DESCRIPTIFS 								  -->
 					<!-- **************************************************************************************** -->
 
 					<div id="tabbed_area" class="contenu_fiche_produit">
@@ -328,7 +328,7 @@ if($produit['stock'] >0) // Affiche le formulaire de selection de quantité s'il
 
 
 
-						</div> <!-- fin DES ONGLETS DESCRIPTION ET AVIS -->
+						</div> <!-- fin DES ONGLETS DESCRIPTION  -->
 
 
 
