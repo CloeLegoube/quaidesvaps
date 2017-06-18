@@ -14,7 +14,7 @@
 			OR p.id_promo IS NULL)
 			GROUP BY  p.id_produit");
 			// On fait une requête de selection pour aller chercher les infos dU produit en fonction de l'ID de l'URL
-	$produit = $resultat->fetch_assoc();
+	$produit = mysqli_fetch_assoc($resultat);
 		?>
 		<meta property="fb:app_id"          content="1234567890" />
 		<meta property="og:type"            content="article" />

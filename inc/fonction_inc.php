@@ -9,10 +9,10 @@
 function execute_requete($req)
 {
 	global $mysqli; // On récupère l'objet mysqli et la met dans une autre fonction.
-	$resultat = $mysqli->query($req);
+	$resultat = mysqli_query($mysqli, $req);
 	if(!$resultat)  // Si le resultat est FALSE alors on écrit erreur de requête
 	{
-		die("Erreur de requête. <br /> La requête : $req <br /> Erreur : ". $mysqli->error);
+		die("Erreur de requête. <br /> La requête : $req <br /> Erreur : ". mysqli_error($mysqli));
 	}
 	return $resultat; // Pas besoin de mettre un ELSE car le DIE arrete tout ce qui vient derrière donc pas besoin.
 }
